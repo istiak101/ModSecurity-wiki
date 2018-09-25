@@ -251,3 +251,58 @@ $ ./configure
 $ make
 $ make install
 ```
+
+## Mac OSX 10.13
+
+Sent by @scottcc (See: #1907)
+
+Note: There's probably ways to do this that don't involve `homebrew` - those were not explored.
+
+### libModSecurity
+
+```sh
+brew install flex bison zlib curl pcre libffi autoconf automake yajl pkg-config libtool ssdeep luarocks
+brew install geoip --with-geoipupdate
+brew install doxygen --with-llvm
+
+# Arbitrarily, create a directory to put things in
+sudo mkdir -p /usr/local/modsecurity
+sudo chown -R $(whoami) /usr/local/modsecurity
+
+cd /usr/local/opt
+mkdir ModSecurity
+git clone https://github.com/SpiderLabs/ModSecurity && cd ModSecurity
+git checkout -b v3/master origin/v3/master
+sh build.sh
+git submodule init && git submodule update
+./configure
+make
+make install
+```
+
+### nginx connector
+
+Note: the exports are *slightly* different than other OS's listed above.
+
+```sh
+MOD_SECURITY_INC=/usr/local/opt/ModSecurity/headers/
+MOD_SECURITY_LIB=/usr/local/opt/ModSecurity/src/.libs/
+
+cd /usr/local/opt/
+git clone https://github.com/SpiderLabs/ModSecurity-nginx
+
+# NOW edit the brew nginx formula to have two chunks added (brew edit nginx)
+    option "with-modsecurity", "Compile with v3 ModSecurity module"
+
+# then later near the bottom, add a chunk that detects this and adds the module
+    if build.with? "modsecurity"
+        args << "--add-module=/usr/local/opt/ModSecurity-nginx"
+    end
+
+# Use homebrew to build it from source with the new argument you just added:
+brew install -vd --build-from-source nginx --with-modsecurity
+# You should see in the output somewhere that it "found /usr/local/modsecurity", or close to that.
+
+# TEST that with (make sure you see "--add-module=/usr/local/opt/ModSecurity-nginx" in there, likely at end)
+nginx -V
+```
