@@ -4667,7 +4667,7 @@ Every collection contains several built-in variables that are available and are 
 #'''IS_NEW''' - set to 1 if the collection is new (not yet persisted) otherwise set to 0.
 #'''KEY''' - the value of the initcol variable (the client's IP address in the example).
 #'''LAST_UPDATE_TIME''' - date/time of the last update to the collection.
-#'''TIMEOUT''' - date/time in seconds when the collection will be updated on disk from memory (if no other updates occur). This variable may be set if you wish to specifiy an explicit expiration time (default is 3600 seconds).
+#'''TIMEOUT''' - date/time in seconds when the collection will be updated on disk from memory (if no other updates occur). This variable may be set if you wish to specifiy an explicit expiration time (default is 3600 seconds). The TIMEOUT is updated every time that the values of an entry is changed. The expiration is set by entry not to the entry collection.
 #'''UPDATE_COUNTER''' - how many times the collection has been updated since creation.
 #'''UPDATE_RATE''' - is the average rate updates per minute since creation.
 
