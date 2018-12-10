@@ -9,11 +9,12 @@ If your distribution is missing and you manage to compile it, don't forget to ad
 ##### Table of Contents
 
 1. [CentOS 7 Minimal](#centos-7-minimal)
-2. [Amazon Linux](#amazon-linux)
-3. [CentOS 6.x](#centos-6x)
-4. [CentOS 6.5](#centos-65-minimal)
-5. [Ubuntu 15.04](#ubuntu-1504)
-6. [Mac OSX 10.13](#mac-osx-1013)
+2. [CentOS 7 Minimal (dynamic)](#centos-7-minimal-dynamic)
+3. [Amazon Linux](#amazon-linux)
+4. [CentOS 6.x](#centos-6x)
+5. [CentOS 6.5](#centos-65-minimal)
+6. [Ubuntu 15.04](#ubuntu-1504)
+7. [Mac OSX 10.13](#mac-osx-1013)
 
 ## Centos 7 Minimal
 
@@ -53,7 +54,40 @@ make
 make install
 ```
 
+## Centos 7 Minimal dynamic
 
+Sent by @chang-zhao (See: #1977)
+
+Check nginx -v for the NGINX version and change appropriately; here it's 1.15.7.
+
+```sh
+sudo yum groupinstall 'Development Tools' -y
+sudo yum install gcc-c++ flex bison yajl yajl-devel curl-devel curl GeoIP-devel doxygen zlib-devel
+sudo yum install lmdb lmdb-devel libxml2 libxml2-devel ssdeep ssdeep-devel lua lua-devel
+sudo git clone --depth 1 -b v3/master --single-branch https://github.com/SpiderLabs/ModSecurity
+cd ModSecurity
+sudo git submodule init
+sudo git submodule update
+sudo ./build.sh
+sudo ./configure
+sudo make
+sudo make install
+sudo git clone --depth 1 https://github.com/SpiderLabs/ModSecurity-nginx.git
+sudo wget http://nginx.org/download/nginx-1.15.7.tar.gz
+sudo tar zxvf nginx-1.15.7.tar.gz
+cd nginx-1.15.7
+sudo ./configure --with-compat --add-dynamic-module=../ModSecurity-nginx
+sudo make modules
+sudo cp objs/ngx_http_modsecurity_module.so /etc/nginx/modules
+sudo mkdir /etc/nginx/modsec
+sudo cp ~/ModSecurity/unicode.mapping /etc/nginx/modsec/
+```
+
+Then add load_module instruction to nginx.conf in the main (top-level) context:
+
+```
+load_module modules/ngx_http_modsecurity_module.so;
+```
 
 ## Amazon Linux
 
