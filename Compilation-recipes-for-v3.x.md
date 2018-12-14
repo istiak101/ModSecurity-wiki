@@ -15,6 +15,8 @@ If your distribution is missing and you manage to compile it, don't forget to ad
 5. [CentOS 6.5](#centos-65-minimal)
 6. [Ubuntu 15.04](#ubuntu-1504)
 7. [Mac OSX 10.13](#mac-osx-1013)
+8. [AWS Linux - RPM](#aws-linux-rpm)
+9. [CentOS 7 - RPM](#centos-7-rpm)
 
 ## Centos 7 Minimal
 
@@ -340,4 +342,237 @@ brew install -vd --build-from-source nginx --with-modsecurity
 
 # TEST that with (make sure you see "--add-module=/usr/local/opt/ModSecurity-nginx" in there, likely at end)
 nginx -V
+```
+
+## AWS Linux - RPM
+
+Sent by Eero Volotinen
+
+ModSecurity compilation for AWS Linux Nginx
+
+- Install aws linux 2
+
+- Install needed packages:
+
+```
+amazon-linux-extras install -y nginx1.12
+yumdownloader --source nginx
+rpm -i nginx-1.12.2-1.amzn2.0.2.src.rpm
+```
+
+### libModSecurity
+
+```
+yum install -y git rpm-build gperftools-devel openssl-devel pcre-devel zlib-devel \
+GeoIP-devel gd-devel perl-devel libxslt-devel perl-ExtUtils-Embed.noarch gcc gcc-c++ autoconf automake libtool
+ Clone modsecurity repository & compile modsecurity connector
+
+git clone --depth 1 -b v3/master --single-branch https://github.com/SpiderLabs/ModSecurity
+cd ModSecurity
+git submodule init
+git submodule update
+./build.sh
+./configure
+make -j2
+#takes about 15 minutes
+make install
+```
+
+### nginx connector
+
+```
+cd /root
+mkdir nginx
+git clone --depth 1 https://github.com/SpiderLabs/ModSecurity-nginx.git
+
+#unpack correct version from rpm package
+tar zxf /root/rpmbuild/SOURCES/nginx-1.12.2.tar.gz
+cd nginx-1.12.2/
+#generate build string
+nginx -V 2>&1 | grep 'configure arguments' | sed "s#configure arguments:#./configure --add-dynamic-module=../ModSecurity-nginx #g" 
+# if looks good, compile
+
+nginx -V 2>&1 | grep 'configure arguments' | sed "s#configure arguments:#./configure --add-dynamic-module=../ModSecurity-nginx #g" |bash
+make modules
+Note. build string looks like this:
+
+./configure --add-dynamic-module=../ModSecurity-nginx --prefix=/usr/share/nginx --sbin-path=/usr/sbin/nginx --modules-path=/usr/lib64/nginx/modules --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --http-client-body-temp-path=/var/lib/nginx/tmp/client_body --http-proxy-temp-path=/var/lib/nginx/tmp/proxy --http-fastcgi-temp-path=/var/lib/nginx/tmp/fastcgi --http-uwsgi-temp-path=/var/lib/nginx/tmp/uwsgi --http-scgi-temp-path=/var/lib/nginx/tmp/scgi --pid-path=/run/nginx.pid --lock-path=/run/lock/subsys/nginx --user=nginx --group=nginx --with-file-aio --with-ipv6 --with-http_ssl_module --with-http_v2_module --with-http_realip_module --with-http_addition_module --with-http_xslt_module=dynamic --with-http_image_filter_module=dynamic --with-http_geoip_module=dynamic --with-http_sub_module --with-http_dav_module --with-http_flv_module --with-http_mp4_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_random_index_module --with-http_secure_link_module --with-http_degradation_module --with-http_slice_module --with-http_stub_status_module --with-http_perl_module=dynamic --with-mail=dynamic --with-mail_ssl_module --with-pcre --with-pcre-jit --with-stream=dynamic --with-stream_ssl_module --with-google_perftools_module --with-debug --with-cc-opt='-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -m64 -mtune=generic' --with-ld-opt='-Wl,-z,relro -specs=/usr/lib/rpm/redhat/redhat-hardened-ld -Wl,-E'
+```
+
+### Build RPM package
+
+```
+cd /root
+mkdir -p /root/rpmbuild/BUILD
+find . -type f -iname 'libmodsecurity.so.3.*' -exec cp {} /root/rpmbuild/BUILD \;
+find . -type f -iname 'ngx_http_modsecurity_module.so' -exec cp {} /root/rpmbuild/BUILD \;
+#rpm spec file  nginx-modsecurity.spec
+cd /root/rpmbuild/SPECS
+#create file nginx-modsecurity.spec
+rpmbuild -ba nginx-modsecurity.spec
+```
+
+### Testing package
+
+```
+#copy package needed machine or repo:
+/root/rpmbuild/RPMS/x86_64/nginx-modsecurity3-aws-1.0.0-1.x86_64.rpm
+rpm -i nginx-modsecurity3-aws-1.0.0-1.x86_64.rpm
+systemctl start nginx
+systemctl status nginx
+```
+
+### RPM SPEC file
+
+```
+Name: nginx-modsecurity3-aws
+Version: 3.0.3
+Release: 1
+Group: Applications/System
+BuildArch: x86_64
+Summary: modsecurity for nginx
+License: GPL
+
+%description
+Brief description of software package.
+Provides: libmodsecurity.so.3 nginx-modsecurity
+
+
+%prep
+
+%build
+
+%install
+mkdir -p %{buildroot}/opt/modsecurity
+cp libmodsecurity.so.3.0.3 %buildroot/opt/modsecurity
+cp ngx_http_modsecurity_module.so %buildroot/opt/modsecurity
+%post
+echo 'load_module "/usr/lib64/nginx/modules/ngx_http_modsecurity_module.so";' > /usr/share/nginx/modules/mod-modsecurity.conf
+ln -sf /opt/modsecurity/ngx_http_modsecurity_module.so /usr/lib64/nginx/modules/ngx_http_modsecurity_module.so
+cat > /etc/ld.so.conf.d/modsecurity.conf << EOF
+/opt/modsecurity
+EOF
+ldconfig
+%postun
+rm -f /etc/ld.so.conf.d/modsecurity.conf
+rm -f /usr/lib64/nginx/modules/ngx_http_modsecurity_module.so
+rm -f /usr/share/nginx/modules/mod-modsecurity.conf
+ldconfig
+
+
+%clean
+
+%files
+/*
+```
+
+## CentOS 7 - RPM
+
+Sent by Eero Volotinen
+
+- Install needed packages:
+
+```
+yum -y install epel-release
+yum -y install nginx
+yumdownloader --source nginx
+yum install -y git rpm-build gperftools-devel openssl-devel pcre-devel zlib-devel \
+GeoIP-devel gd-devel perl-devel libxslt-devel perl-ExtUtils-Embed.noarch gcc gcc-c++ autoconf automake libtool
+rpm -i nginx-1.12.2-2.el7.src.rpm
+```
+
+### libModSecurity
+
+```
+git clone --depth 1 -b v3/master --single-branch https://github.com/SpiderLabs/ModSecurity
+cd ModSecurity
+git submodule init
+git submodule update
+./build.sh
+./configure
+make -j2
+#takes about 15 minutes
+make install
+```
+
+### nginx connector
+
+```
+cd /root
+mkdir nginx
+git clone --depth 1 https://github.com/SpiderLabs/ModSecurity-nginx.git
+#unpack correct version from rpm package
+tar zxf /root/rpmbuild/SOURCES/nginx-1.12.2.tar.gz
+cd nginx-1.12.2/
+#generate build string
+nginx -V 2>&1 | grep 'configure arguments' | sed "s#configure arguments:#./configure --add-dynamic-module=../ModSecurity-nginx #g" 
+# if looks good, compile
+
+nginx -V 2>&1 | grep 'configure arguments' | sed "s#configure arguments:#./configure --add-dynamic-module=../ModSecurity-nginx #g" |bash
+make modules
+cd /root
+mkdir -p /root/rpmbuild/BUILD
+find . -type f -iname 'libmodsecurity.so.3.*' -exec cp {} /root/rpmbuild/BUILD \;
+find . -type f -iname 'ngx_http_modsecurity_module.so' -exec cp {} /root/rpmbuild/BUILD \;
+```
+
+### Build RPM package
+
+```
+#rpm spec file  nginx-modsecurity.spec
+cd /root/rpmbuild/SPECS
+#create file
+#nginx-modsecurity.spec
+rpmbuild -ba nginx-modsecurity.spec
+```
+
+### Testing package
+
+```
+# install package .
+rpm -i /root/rpmbuild/RPMS/x86_64/nginx-modsecurity3-centos7-1.0.0-1.x86_64.rpm
+```
+
+### RPM SPEC file
+
+```
+Name: nginx-modsecurity3-centos7
+Version: 3.0.3
+Release: 1
+Group: Applications/System
+BuildArch: x86_64
+Summary: modsecurity for nginx
+License: GPL
+
+%description
+Brief description of software package.
+Provides: libmodsecurity.so.3 nginx-modsecurity
+
+
+%prep
+
+%build
+
+%install
+mkdir -p %{buildroot}/opt/modsecurity
+cp libmodsecurity.so.3.0.3 %buildroot/opt/modsecurity
+cp ngx_http_modsecurity_module.so %buildroot/opt/modsecurity
+%post
+echo 'load_module "/usr/lib64/nginx/modules/ngx_http_modsecurity_module.so";' > /usr/share/nginx/modules/mod-modsecurity.conf
+ln -sf /opt/modsecurity/ngx_http_modsecurity_module.so /usr/lib64/nginx/modules/ngx_http_modsecurity_module.so
+cat > /etc/ld.so.conf.d/modsecurity.conf << EOF
+/opt/modsecurity
+EOF
+ldconfig
+%postun
+rm -f /etc/ld.so.conf.d/modsecurity.conf
+rm -f /usr/lib64/nginx/modules/ngx_http_modsecurity_module.so
+rm -f /usr/share/nginx/modules/mod-modsecurity.conf
+ldconfig
+
+
+%clean
+
+%files
+/*
 ```
