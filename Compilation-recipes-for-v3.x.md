@@ -34,7 +34,7 @@ sh build.sh
 git submodule init
 git submodule update
 ./configure
-yum install ftp://195.220.108.108/linux/fedora/linux/updates/23/x86_64/b/bison-3.0.4-3.fc23.x86_64.rpm
+yum install https://archives.fedoraproject.org/pub/archive/fedora/linux/updates/23/x86_64/b/bison-3.0.4-3.fc23.x86_64.rpm
 make
 make install
 ```
@@ -101,12 +101,12 @@ Provided by @csanders-git
 yum install gcc-c++ flex bison curl-devel curl libxml2-devel doxygen zlib-devel git automake libtool pcre-devel
 cd /opt/
 # Steal Fedora's YAJL and YAJL-devel packages
-wget ftp://195.220.108.108/linux/fedora/linux/releases/23/Everything/x86_64/os/Packages/y/yajl-2.1.0-4.fc23.x86_64.rpm
+wget https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/23/Everything/x86_64/os/Packages/y/yajl-2.1.0-4.fc23.x86_64.rpm
 rpm -i yajl-2.1.0-4.fc23.x86_64.rpm
-wget ftp://195.220.108.108/linux/fedora/linux/releases/23/Everything/x86_64/os/Packages/y/yajl-devel-2.1.0-4.fc23.x86_64.rpm
+wget https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/23/Everything/x86_64/os/Packages/y/yajl-devel-2.1.0-4.fc23.x86_64.rpm
 rpm -i yajl-devel-2.1.0-4.fc23.x86_64.rpm
 # Install latest bison
-yum install ftp://195.220.108.108/linux/fedora/linux/updates/23/x86_64/b/bison-3.0.4-3.fc23.x86_64.rpm
+yum install https://archives.fedoraproject.org/pub/archive/fedora/linux/updates/23/x86_64/b/bison-3.0.4-3.fc23.x86_64.rpm
 # Amazon's GeoIP-devel package does not come with geoip.pc (no idea why not)
 wget ftp://rpmfind.net/linux/centos/5.11/extras/x86_64/RPMS/GeoIP-data-20090201-1.el5.centos.x86_64.rpm
 wget ftp://rpmfind.net/linux/fedora/linux/releases/23/Everything/x86_64/os/Packages/g/GeoIP-1.6.6-1.fc23.x86_64.rpm
