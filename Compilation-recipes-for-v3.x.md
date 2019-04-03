@@ -11,12 +11,13 @@ If your distribution is missing and you manage to compile it, don't forget to ad
 1. [CentOS 7 Minimal](#centos-7-minimal)
 2. [CentOS 7 Minimal (dynamic)](#centos-7-minimal-dynamic)
 3. [Amazon Linux](#amazon-linux)
-4. [CentOS 6.x](#centos-6x)
-5. [CentOS 6.5](#centos-65-minimal)
-6. [Ubuntu 15.04](#ubuntu-1504)
-7. [Mac OSX 10.13](#mac-osx-1013)
-8. [AWS Linux - RPM](#aws-linux-rpm)
-9. [CentOS 7 - RPM](#centos-7-rpm)
+4. [Amazon Linux 2](#amazon-linux2)
+5. [CentOS 6.x](#centos-6x)
+6. [CentOS 6.5](#centos-65-minimal)
+7. [Ubuntu 15.04](#ubuntu-1504)
+8. [Mac OSX 10.13](#mac-osx-1013)
+9. [AWS Linux - RPM](#aws-linux-rpm)
+10. [CentOS 7 - RPM](#centos-7-rpm)
 
 ## Centos 7 Minimal
 
@@ -121,6 +122,48 @@ sh build.sh
 git submodule init
 git submodule update
 ./configure
+make
+make install
+```
+
+## Amazon Linux 2
+
+Provided by @csanders-git
+
+### libModSecurity
+
+```
+yum install yajl-devel git gcc-c++ flex bison curl-devel curl libxml2-devel doxygen zlib-devel git automake libtool pcre-devel GeoIP-devel lua-devel wget openssl-devel
+# Install LMDB
+cd /opt/
+git clone git clone https://github.com/LMDB/lmdb.git
+cd lmdb/libraries/liblmdb
+make
+make install
+# Install SSDEEP
+cd /opt/
+git clone https://github.com/ssdeep-project/ssdeep
+cd ssdeep/
+./bootstrap
+./configure && make && make install
+# Install libmodsecurity
+cd /opt/
+git clone https://github.com/SpiderLabs/ModSecurity
+cd ModSecurity
+./build
+git submodule init
+git submodule update
+./configure
+make
+make install
+# Install Nginx + Nginx Connector
+cd /opt
+git clone --depth 1 https://github.com/SpiderLabs/ModSecurity-nginx.git
+# Nginx
+wget https://nginx.org/download/nginx-1.15.10.tar.gz
+tar -xvzf nginx-1.15.10.tar.gz 
+cd nginx-1.15.10/
+./configure --with-http_ssl_module --with-http_v2_module --with-compat --add-dynamic-module=/opt/ModSecurity-nginx/
 make
 make install
 ```
