@@ -3001,7 +3001,7 @@ In Windows and Unix, commands may be escaped by different means, such as:
 The cmdLine transformation function avoids this problem by manipulating the variable contend in the following ways:
 *deleting all backslashes [\]
 *deleting all double quotes ["]
-*deleting all sigle quotes [']
+*deleting all single quotes [']
 *deleting all carets [^]
 *deleting spaces before a slash [/]
 *deleting spaces before an open parentesis [(]
