@@ -26,7 +26,7 @@ Sent by @elialum (See: #1039)
 ### libModSecurity
 
 ```sh
-yum install gcc-c++ flex bison yajl yajl-devel curl-devel curl GeoIP-devel doxygen zlib-devel
+yum install gcc-c++ flex bison yajl yajl-devel curl-devel curl GeoIP-devel doxygen zlib-devel pcre-devel
 cd /opt/
 git clone https://github.com/SpiderLabs/ModSecurity
 cd ModSecurity
