@@ -1279,7 +1279,7 @@ Anything over the limit will be rejected with status code 413 (Request Entity To
 
 '''Version''': 2.5.0
 
-'''Supported on libModSecurity:''' Yes
+'''Supported on libModSecurity:''' No
 
 '''Default:''' 1048576 (1 MB)
 
