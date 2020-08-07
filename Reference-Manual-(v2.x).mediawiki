@@ -3453,6 +3453,8 @@ These are the reserved ranges:
 *22,000,000-69,999,999: unused (available for reservation)
 *77,000,000-77,999,999 - reserved: in use by Imunify360 - production rules
 *88,000,000-88,999,999 - reserved: in use by Imunify360 - beta users
+*99,000,000-99,099,999  reserved for use by Microsoft https://azure.microsoft.com/en-us/services/web-application-firewall/
+
 
 == initcol ==
 '''Description:''' Initializes a named persistent collection, either by loading data from storage or by creating a new collection in memory.
