@@ -6,7 +6,7 @@
 = Introduction =
 ModSecurity is a web application firewall (WAF). With over 70% of attacks now carried out over the web application level, organisations need all the help they can get in making their systems secure. WAFs are deployed to establish an increased external security layer to detect and/or prevent attacks before they reach web applications. ModSecurity provides protection from a range of attacks against web applications and allows for HTTP traffic monitoring and real-time analysis with little or no changes to existing infrastructure.
 
-== HTTP Traffic Logging ==SecGsbLookupDb
+== HTTP Traffic Logging ==
 Web servers are typically well-equipped to log traffic in a form useful for marketing analyses, but fall short logging traffic to web applications. In particular, most are not capable of logging the request bodies. Your adversaries know this, and that is why most attacks are now carried out via POST requests, rendering your systems blind. ModSecurity makes full HTTP transaction logging possible, allowing complete requests and responses to be logged. Its logging facilities also allow fine-grained decisions to be made about exactly what is logged and when, ensuring only the relevant data is recorded. As some of the request and/or response may contain sensitive data in certain fields, ModSecurity can be configured to mask these fields before they are written to the audit log.
 
 == Real-Time Monitoring and Attack Detection ==
