@@ -1238,7 +1238,7 @@ When a multipart/form-data request is being processed, once the in-memory limit 
 ; Note : libModSecurity is able to deal with request body in a file or in a buffer (chunked or not). Web servers have properties which controls whenever a request should be saved to a file or used as a buffer (e.g. client_body_buffer_size [https://nginx.org/en/docs/http/ngx_http_core_module.html#client_body_buffer_size]) . If it is a file, ModSecurity will use the file to perform the inspection. If not, the buffer will be used.
 
 == SecRequestBodyJsonDepthLimit ==
-'''Description:''' Configures the maximum parsing depth that allowed when parsing a JSON object.
+'''Description:''' Configures the maximum parsing depth that is allowed when parsing a JSON object.
 
 '''Syntax:''' <code>SecRequestBodyJsonDepthLimit LIMIT </code>
 
