@@ -1,6 +1,6 @@
 = ModSecurity&reg; Reference Manual =
 == Current as of v3.0.6 ==
-=== Copyright &copy; 2022 [https://www.trustwave.com/ Trustwave Holdings, Inc.] ===
+=== Copyright &copy; 2022 [https://www.trustwave.com/ Trustwave Holdings, Inc.] ===ha
 
 = Table of Contents =
 = Introduction =
@@ -481,56 +481,13 @@ Every rule following a previous <code>SecDefaultAction</code> directive in the s
 ; Warning : <code>SecDefaultAction</code> is not inherited across configuration contexts. (For an example of why this may be a problem, read the following ModSecurity Blog entry http://blog.spiderlabs.com/2008/07/three-modsecurity-rule-language-annoyances.html .)
 
 == SecDisableBackendCompression ==
-'''Description:''' Disables backend compression while leaving the frontend compression enabled. 
-
-'''Syntax:''' <code>SecDisableBackendCompression On|Off </code>
-
-'''Scope:''' Any 
-
-'''Version:''' 2.6.0-2.9.x
-
-'''Supported on libModSecurity:''' TBI
-
-'''Default:''' Off
-
-This directive is necessary in reverse proxy mode when the backend servers support response compression, but you wish to inspect response bodies. Unless you disable backend compression, ModSecurity will only see compressed content, which is not very useful. This directive is not necessary in embedded mode, because ModSecurity performs inspection before response compression takes place.
+'''Not supported in v3'''
 
 == SecHashEngine ==
-'''Description:''' Configures the hash engine. 
-
-'''Syntax:''' <code>SecHashEngine On|Off</code>
-
-'''Example Usage:''' <code>SecHashEngine On </code>
-
-'''Scope''': Any 
-
-'''Version:''' 2.7.1-2.9.x
-
-'''Supported on libModSecurity:''' TBI
-
-'''Default:''' Off
-
-The possible values are: 
-*'''On''': Hash engine can process the request/response data.
-*'''Off''': Hash engine will not process any data. 
-
-; Note : Users must enable stream output variables and content injection.
+'''Not supported in v3''
 
 == SecHashKey ==
-'''Description:''' Define the key that will be used by HMAC. 
-
-'''Syntax:''' <code>SecHashKey rand|TEXT KeyOnly|SessionID|RemoteIP</code>
-
-'''Example Usage:''' <code>SecHashKey "this_is_my_key" KeyOnly</code>
-
-'''Scope''': Any 
-
-'''Version:''' 2.7.1-2.9.x
-
-'''Supported on libModSecurity:''' TBI
-
-ModSecurity hash engine will append, if specified, the user's session id or remote ip to the key before the MAC operation. If the first parameter is "rand" then a random key will be generated and used by the engine.
-
+'''Not supported in v3'''
 
 == SecHashParam ==
 '''Not supported in v3'''
