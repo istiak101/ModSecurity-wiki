@@ -220,38 +220,6 @@ location @backend {
 </pre>
 When deploying via this method you will need to modify the @backend definition to point to your correct back-end web application that Nginx is proxying to. Again, Starting with ModSecurity 2.7.2 the ModSecurityPass option was removed.
 
-= Installation for Microsoft IIS =
-Before installing ModSecurity make sure you have Visual Studio 2013 Runtime (vcredist) installed.
-Vcredist can be downloaded here: http://www.visualstudio.com/downloads/download-visual-studio-vs
-(note that, there are two different versions 32 and 64b).
-
-=== Configuration ===
-: After the installation the module will be running in all websites by default. To remove it from a website add to web.config:
-<pre><modules>
-    <remove name="ModSecurityIIS" />
-</modules></pre>
-: To configure module in a website add to web.config:
-<pre><?xml version="1.0" encoding="UTF-8"?>
-<configuration>
-    <system.webServer>
-        <ModSecurity enabled="true" configFile="c:\inetpub\wwwroot\xss.conf" />
-    </system.webServer>
-</configuration></pre>
-: where configFile is standard ModSecurity config file.
-<br>
-: Events from the module will show up in "Application" Windows log.
-
-== Common Problems ==
-
-: If after installation protected website responds with HTTP 503 error and event ID 2280 keeps getting logged in the application event log:
-
-
-
-most likely it means that the installation process has failed and the ModSecurityIIS.dll module is missing one or more libraries that it depends on. Repeating installation of the prerequisites and the module files should fix the problem. The dependency walker tool:
-
-* http://www.dependencywalker.com/
-
-can be used to figure out which library is missing or cannot be loaded.
 
 = Configuration Directives =
 The following section outlines all of the ModSecurity directives. Most of the ModSecurity directives can be used inside the various Apache Scope Directives such as VirtualHost, Location, LocationMatch, Directory, etc... There are others, however, that can only be used once in the main configuration file. This information is specified in the Scope sections below. The first version to use a given directive is given in the Version sections below.
