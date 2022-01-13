@@ -1684,18 +1684,10 @@ Contains the time, in microseconds, spent in audit logging. This value is known 
 '''Supported on libModSecurity:''' TBI
 
 == PERF_PHASE1 ==
-Contains the time, in microseconds, spent processing phase 1.
-
-'''Version:''' 2.6.0-2.9.x
-
-'''Supported on libModSecurity:''' TBI
+Not supported in v3
 
 == PERF_PHASE2 ==
-Contains the time, in microseconds, spent processing phase 2.
-
-'''Version:''' 2.6.0-2.9.x
-
-'''Supported on libModSecurity:''' TBI
+Not supported in v3
 
 == PERF_PHASE3 ==
 Not supported in v3
@@ -2031,16 +2023,7 @@ SecRule STATUS_LINE "@contains 500" "phase:3,id:49,log,pass,logdata:'Application
 '''Supported on libModSecurity:''' TBI
 
 == STREAM_INPUT_BODY ==
-'''Version:''' 2.6.0-2.9.x
-
-'''Supported on libModSecurity:''' No
-
-This variable give access to the raw request body content.  This variable is best used for two use-cases:
-#For fast pattern matching - using @pm/@pmf to prequalify large text strings against any kind of content-type data.  This is more performant vs. using REQUEST_BODY/ARGS_POST/ARGS_POST_NAMES as it happens before ModSecurity parsing in phase:2 variable population.
-#For data substitution - using @rsub against this variable allows you to manipulate live request body data.  Example - to remove offending payloads or to substitute benign data.
-; Note : You must enable the SecStreamInBodyInspection directive
-
-; Note : This directive is NOT supported for libModSecurity (v3).
+Not supported in v3
 
 == STREAM_OUTPUT_BODY ==
 This variable give access to the raw response body content.  This variable is best used for case:
