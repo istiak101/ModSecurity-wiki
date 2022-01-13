@@ -1278,46 +1278,10 @@ If SecStatusEngine directive is not present, it is disabled.  If SecStatusEngine
 </pre>
 
 == SecStreamInBodyInspection ==
-'''Description:''' Configures the ability to use stream inspection for inbound request data in a re-allocable buffer. For security reasons we are still buffering the stream. 
-
-'''Syntax:''' <code>SecStreamInBodyInspection On|Off</code>
-
-'''Example Usage:''' <code>SecStreamInBodyInspection On</code>
-
-'''Scope:''' Any
-
-'''Version:''' 2.6.0-2.9.x
-
-'''Default:''' Off
-
-'''Supported on libModSecurity:''' No
-
-This feature enables the creation of the STREAM_INPUT_BODY variable and is useful for data modification or to match data in raw data for any content-types.
-
-; Note : This directive provides full access to REQUEST_BODY payload data.  It does not include REQUEST_URI or REQUEST_HEADER data. Also it provides data to all kind of content types, different than REQUEST_BODY.
-
-; Note : This directive is NOT supported for libModSecurity (v3). Naturally, STREAM_INPUT_BODY is also NOT supported on libModSecurity.
-
-; Note : This directive may significantly impact file upload times. The impact depends on server resources and the nature of operations being performed on the request bodies being streamed in.
+'''Not supported in v3'''
 
 == SecStreamOutBodyInspection ==
-'''Description:''' Configures the ability to use stream inspection for outbound request data in a re-allocable buffer.  For security reasons we are still buffering the stream.
-
-'''Syntax:''' <code>SecStreamOutBodyInspection On|Off</code>
-
-'''Example Usage:''' <code>SecStreamOutBodyInspection On</code>
-
-'''Scope:''' Any
-
-'''Version:''' 2.6.0-2.9.x
-
-'''Supported on libModSecurity:''' TBD
-
-'''Default:''' Off
-
-This feature enables the creation of the STREAM_OUTPUT_BODY variable and is useful when you need to do data modification into response body.
-
-; Note : This directive provides access to RESPONSE_BODY payload data. It does not include RESPONSE_HEADER data.
+'''Not supported in v3'''
 
 == SecTmpDir ==
 '''Description:''' Configures the directory where temporary files will be created.
@@ -1818,18 +1782,10 @@ Contains the time, in microseconds, spent processing phase 2.
 '''Supported on libModSecurity:''' TBI
 
 == PERF_PHASE3 ==
-Contains the time, in microseconds, spent processing phase 3.
-
-'''Version:''' 2.6.0-2.9.x
-
-'''Supported on libModSecurity:''' TBI
+Not supported in v3
 
 == PERF_PHASE4 ==
-Contains the time, in microseconds, spent processing phase 4.
-
-'''Version:''' 2.6.0-2.9.x
-
-'''Supported on libModSecurity:''' TBI
+Not supported in v3
 
 == PERF_PHASE5 ==
 Not supported in v3
