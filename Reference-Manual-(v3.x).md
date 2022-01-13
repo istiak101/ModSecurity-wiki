@@ -1,6 +1,6 @@
 = ModSecurity&reg; Reference Manual =
-== Current as of v3.0.6 ==
-=== Copyright &copy; 2022 [https://www.trustwave.com/ Trustwave Holdings, Inc.] ===
+== Current as of v2.5.13 v2.6 v2.7 v2.8 v2.9 v3.0 ==
+=== Copyright &copy; 2004-2018 [https://www.trustwave.com/ Trustwave Holdings, Inc.] ===
 
 = Table of Contents =
 = Introduction =
@@ -41,9 +41,24 @@ ModSecurity is available under the Apache Software License v2 [http://www.apache
 
 ; Note : ModSecurity, mod_security, ModSecurity Pro, and ModSecurity Core Rules are trademarks or registered trademarks of Trustwave Holdings, Inc.
 
+= Installation for Apache =
+== Prerequisites ==
 
+=== ModSecurity 2.x works only with Apache 2.0.x or higher ===
+The ModSecurity team works hard to ensure that ModSecurity version 2.x will work with all versions of Apache 2.x and higher. If you find incompatibilities on any version (2.2.x, 2.4.x, or 2.6.x) please immediately inform the ModSecurity team
 
+=== mod_uniqueid ===
+Make sure you have <code>mod_unique_id</code> installed.
+mod_unique_id is packaged with Apache httpd.
 
+=== libapr and libapr-util ===
+libapr and libapr-util - http://apr.apache.org/
+
+=== libpcre ===
+http://www.pcre.org/
+
+=== libxml2 ===
+http://xmlsoft.org/downloads.html
 
 === liblua v5.x.x ===
 This library is optional and only needed if you will be using the new Lua engine - http://www.lua.org/download.html
@@ -90,6 +105,77 @@ For v2.6.0 and above, the installation process has changed.  Follow these steps:
 To download the stable release go to http://www.modsecurity.org/download/. Binary distributions are sometimes available. If they are, they are listed on the download page. If not download the source code distribution.
 
 == Installation Steps ==
+
+*Stop Apache httpd
+*Unpack the ModSecurity archive
+*Build
+Building differs for UNIX (or UNIX-like) operating systems and Windows.
+=== UNIX ===
+Run the configure script to generate a Makefile. Typically no options are needed.
+<pre>./configure</pre>
+Options are available for more customization (use ./configure --help for a full list), but typically you will only need to specify the location of the apxs command installed by Apache httpd with the --with-apxs option.
+<pre>./configure --with-apxs=/path/to/httpd-2.x.y/bin/apxs</pre>
+; Note : There are certain configure options that are meant for debugging an other development use. If enabled, these options can substantially impact performance. These options include all --debug-* options as well as the --enable-performance-measurements options.
+Compile with:
+<pre>make</pre>
+Optionally test with: 
+<pre>make CFLAGS=-DMSC_TEST test</pre>
+; Note : This is step is still a bit experimental. If you have problems, please send the full output and error from the build to the support list. Most common issues are related to not finding the required headers and/or libraries.
+Optionally build the ModSecurity Log Collector with: 
+<pre>make mlogc</pre>
+Optionally install mlogc: Review the INSTALL file included in the apache2/mlogc-src directory in the distribution.
+Install the ModSecurity module with:
+<pre>make install</pre>
+
+=== Windows (MS VC++ 8) ===
+Edit Makefile.win to configure the Apache base and library paths.
+Compile with: <code>nmake -f Makefile.win</code>
+Install the ModSecurity module with: <code>nmake -f Makefile.win install</code>
+Copy the libxml2.dll and lua5.1.dll to the Apache bin directory. Alternatively you can follow the step below for using LoadFile to load these libraries.
+; Note : Users should follow the steps present in README_WINDOWS.txt into ModSecurity tarball.
+
+=== Edit the main Apache httpd config file (usually httpd.conf) ===
+On UNIX (and Windows if you did not copy the DLLs as stated above) you must load libxml2 and lua5.1 before ModSecurity with something like this:
+<pre>
+LoadFile /usr/lib/libxml2.so
+LoadFile /usr/lib/liblua5.1.so
+</pre>
+Load the ModSecurity module with:
+<pre>
+LoadModule security2_module modules/mod_security2.so
+</pre>
+=== Configure ModSecurity ===
+=== Start Apache httpd ===
+You should now have ModSecurity 2.x up and running.
+
+; Note : If you have compiled Apache yourself you might experience problems compiling ModSecurity against PCRE. This is because Apache bundles PCRE but this library is also typically provided by the operating system. I would expect most (all) vendor-packaged Apache distributions to be configured to use an external PCRE library (so this should not be a problem).
+
+: You want to avoid Apache using the bundled PCRE library and ModSecurity linking against the one provided by the operating system. The easiest way to do this is to compile Apache against the PCRE library provided by the operating system (or you can compile it against the latest PCRE version you downloaded from the main PCRE distribution site). You can do this at configure time using the --with-pcre switch. If you are not in a position to recompile Apache, then, to compile ModSecurity successfully, you'd still need to have access to the bundled PCRE headers (they are available only in the Apache source code) and change the include path for ModSecurity (as you did in step 7 above) to point to them (via the --with-pcre ModSecurity configure option).
+
+: Do note that if your Apache is using an external PCRE library you can compile ModSecurity with WITH_PCRE_STUDY defined,which would possibly give you a slight performance edge in regular expression processing.
+
+: Non-gcc compilers may have problems running out-of-the-box as the current build system was designed around the gcc compiler and some compiler/linker flags may differ. To use a non-gcc compiler you may need some manual Makefile tweaks if issues cannot be solved by exporting custom CFLAGS and CPPFLAGS environment variables.
+
+: If you are upgrading from ModSecurity 1.x, please refer to the migration matrix at http://www.modsecurity.org/documentation/ModSecurity-Migration-Matrix.pdf
+
+: Starting with ModSecurity 2.7.0 there are a few important configuration options
+#'''--enable-pcre-jit''' - Enables JIT support from pcre >= 8.20 that can improve regex performance.
+#'''--enable-lua-cache''' - Enables lua vm caching that can improve lua script performance. Difference just appears if ModSecurity must run more than one script per transaction.
+#'''--enable-request-early''' - On ModSecurity 2.6 phase one has been moved to phase 2 hook, if you want to play around it use this option.
+#'''--enable-htaccess-config''' - It will allow the follow directives to be used into .htaccess files when AllowOverride Options is set :
+<pre>
+        - SecAction
+        - SecRule
+
+        - SecRuleRemoveByMsg
+        - SecRuleRemoveByTag
+        - SecRuleRemoveById
+
+        - SecRuleUpdateActionById
+        - SecRuleUpdateTargetById
+        - SecRuleUpdateTargetByTag
+        - SecRuleUpdateTargetByMsg
+</pre>
 
 = Installation for NGINX =
 The extensibility model of the nginx server does not include dynamically loaded modules, thus ModSecurity must be compiled with the source code of the main server.  Since nginx is available on multiple Unix-based platforms (and also on Windows), for now the recommended way of obtaining ModSecurity for nginx is compilation in the designated environment.
