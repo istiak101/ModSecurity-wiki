@@ -778,56 +778,14 @@ After token expires, it can no longer be used to allow access to a PDF file. Req
 
 The only reason you would want to change the name of the token is if you wanted to hide the fact that you are running ModSecurity. It’s a good reason, but it won’t really help, as the adversary can look into the algorithm used for PDF protection and figure it out anyway. It does raise the bar slightly, so go ahead if you want to.
 
-== SecReadStateLimit ==
-'''Description:''' Establishes a per-IP address limit of how many connections are allowed to be in SERVER_BUSY_READ state. 
 
-'''Syntax:''' <code>SecReadStateLimit LIMIT </code>
-
-'''Example Usage''': <code>SecReadStateLimit 50 </code>
-
-'''Scope''': Main 
-
-'''Version''': 2.5.13, DEPRECATED as of v2.8.0.
-
-'''Supported on libModSecurity:''' No (Deprecated)
-
-'''Default:''' 0 (no limit)
-
-For v2.8.0 or newest refer to SecConnReadStateLimit.
 
 == SecConnReadStateLimit ==
-'''Description:''' Establishes a per-IP address limit of how many connections are allowed to be in SERVER_BUSY_READ state. 
+'''Not supported in v3'''
 
-'''Syntax:''' <code>SecConnReadStateLimit LIMIT OPTIONAL_IP_MATCH_OPERATOR</code>
-
-'''Example Usage''': <code>SecConnReadStateLimit 50 "!@ipMatch 127.0.0.1"</code>
-
-'''Scope''': Main 
-
-'''Version''': v2.8.0-2.9.x (Apache only)
-
-'''Supported on libModSecurity:''' TBI
-
-'''Default:''' 0 (no limit)
-
-This measure is effective against Slowloris-style attacks from a single IP address, but it may not be as good against modified attacks that work by slowly sending request body content. This is because Apache to switches state to SERVER_BUSY_WRITE once request headers have been read. As an alternative, consider mod_reqtimeout (part of Apache as of 2.2.15), which is expected be effective against both attack types.  See Blog post on mitigating slow DoS attacks - http://blog.spiderlabs.com/2010/11/advanced-topic-of-the-week-mitigating-slow-http-dos-attacks.html. v2.8.0 and newest supports the @ipMatch, @ipMatchF and @ipMatchFromFile operator along with the its negative (e.g. !@ipMatch) these were used to create suspicious or whitelist. When a suspicious list is informed, just the IPs that belongs to the list will be filtered. A combination of suspicious and whitelist is possible by using multiple definitions of SecConnReadStateLimit, note, however, that the limit will be always overwrite by its successor.
-
-'''Note:''' This functionality is Apache only.
-
-'''Note 2:''' Make sure [[Reference-Manual#secconnengine]] is on prior to use this feature.
 
 == SecSensorId ==
-'''Description:''' Define a sensor ID that will be present into log part H. 
-
-'''Syntax:''' <code>SecSensorId TEXT </code>
-
-'''Example Usage''': <code>SecSensorId WAFSensor01 </code>
-
-'''Scope''': Main 
-
-'''Version''': 2.7.0-2.9.x
-
-'''Supported on libModSecurity:''' TBI 
+'''Not supported in v3'''
 
 == SecWriteStateLimit ==
 '''Description:''' Establishes a per-IP address limit of how many connections are allowed to be in SERVER_BUSY_WRITE state. 
