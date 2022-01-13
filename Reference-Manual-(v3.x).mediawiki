@@ -1306,25 +1306,14 @@ The possible values are:
 *'''DetectionOnly''': process rules but never executes any disruptive actions (block, deny, drop, allow, proxy and redirect)
 
 == SecRulePerfTime ==
-'''Description:''' Set a performance threshold for rules. Rules that spend at least the time defined will be logged into audit log Part H as Rules-Performance-Info in the format id=usec, comma separated. 
+'''Not supported in v3'''
 
-'''Syntax:''' <code>SecRulePerfTime USECS </code>
 
-'''Example Usage:''' <code>SecRulePerfTime 1000 </code>
-
-'''Scope:''' Any
-
-'''Version:''' 2.7-2.9.x
-
-'''Supported on libModSecurity:''' TBI
-
-The rules hitting the threshold can be accessed via the collection PERF_RULES.
 
 == SecRuleRemoveById ==
 '''Description:''' Removes the matching rules from the current configuration context. 
 
-'''Syntax:''' <code>SecRuleRemoveById ID ID RANGE ... </code>
-
+'''S
 '''Example Usage:''' <code>SecRuleRemoveByID 1 2 "9000-9010" </code>
 
 '''Scope:''' Any
