@@ -787,43 +787,8 @@ The only reason you would want to change the name of the token is if you wanted 
 == SecSensorId ==
 '''Not supported in v3'''
 
-== SecWriteStateLimit ==
-'''Description:''' Establishes a per-IP address limit of how many connections are allowed to be in SERVER_BUSY_WRITE state. 
-
-'''Syntax:''' <code>SecWriteStateLimit LIMIT </code>
-
-'''Example Usage''': <code>SecWriteStateLimit 50 </code>
-
-'''Scope''': Main 
-
-'''Version''': 2.6.0, DEPRECATED as of v2.8.0.
-
-'''Supported on libModSecurity:''' No (Deprecated)
-
-'''Default:''' 0 (no limit)
-
-For v2.8.0 or newest refer to SecConnWriteStateLimit.
-
 == SecConnWriteStateLimit ==
-'''Description:''' Establishes a per-IP address limit of how many connections are allowed to be in SERVER_BUSY_WRITE state. 
-
-'''Syntax:''' <code>SecConnWriteStateLimit LIMIT OPTIONAL_IP_MATCH_OPERATOR</code>
-
-'''Example Usage''': <code>SecConnWriteStateLimit 50 "!@ipMatch 127.0.0.1"</code>
-
-'''Scope''': Main 
-
-'''Version''': 2.6.0-2.9.x (Apache only)
-
-'''Supported on libModSecurity:''' TBI
-
-'''Default:''' 0 (no limit)
-
-This measure is effective against Slow DoS request body attacks. v2.8.0 and newest supports the @ipMatch, @ipMatchF and @ipMatchFromFile operator along with the its negative (e.g. !@ipMatch) these were used to create suspicious or whitelist. When a suspicious list is informed, just the IPs that belongs to the list will be filtered. A combination of suspicious and whitelist is possible by using multiple definitions of SecConnReadStateLimit, note, however, that the limit will be always overwrite by its successor.
-
-'''Note:''' This functionality is Apache only.
-
-'''Note 2:''' Make sure [[Reference-Manual#secconnengine]] is on prior to use this feature.
+'''Not supported in v3'''
 
 == SecRemoteRules ==
 '''Description''': Load rules from a given file hosted on a HTTPS site.
@@ -1513,18 +1478,6 @@ As of ModSecurity version 3.0, SecTmpDir is no longer supported. libModSecurity 
 
 '''Supported on libModSecurity:''' TBI
 
-== SecUnicodeCodePage ==
-'''Description:''' Defines which Unicode code point will be used by the urlDecodeUni transformation function during normalization.
-
-'''Syntax:''' <code>SecUnicodeCodePage XXXXX</code>
-
-'''Example Usage:''' <code>SecUnicodeCodePage 20127</code>
-
-'''Scope:''' Any
-
-'''Version:''' 2.6.1 - DEPRECATED
-
-'''Supported on libModSecurity:''' No (Deprecated)
 
 == SecUploadDir ==
 '''Description:''' Configures the directory where intercepted files will be stored.
