@@ -514,41 +514,10 @@ Every rule following a previous <code>SecDefaultAction</code> directive in the s
 ModSecurity relies on the free geolocation databases (GeoLite City and GeoLite Country) that can be obtained from MaxMind [http://www.maxmind.com]. Currently ModSecurity only supports the legacy GeoIP format. Maxmind's newer GeoIP2 format is not yet currently supported. 
 
 == SecGsbLookupDb ==
-'''Description''': Defines the path to the database that will be used for Google Safe Browsing (GSB) lookups. 
-
-'''Syntax:''' <code>SecGsbLookupDb /path/to/db </code>
-
-'''Example Usage''': <code>SecGsbLookupDb /path/to/GsbMalware.dat</code>
-
-'''Scope:''' Any
-
-'''Version:''' 2.6.0
-
-'''Supported on libModSecurity:''' TBD
-
-ModSecurity relies on the free Google Safe Browsing database that can be obtained from the Google GSB API [http://code.google.com/apis/safebrowsing/].
-
-; Note : Deprecated in 2.7.0 after Google dev team decided to not allow the database download anymore. After registering and obtaining a Safe Browsing API key, you can automatically download the GSB using a tool like wget. For further information on how to proceed with the download, please visit Google's website: https://developers.google.com/safe-browsing/v3/update-guide
+'''Not supported in v3''
 
 == SecGuardianLog ==
-'''Description:''' Configures an external program that will receive the information about every transaction via piped logging.
-
-'''Syntax:''' <code>SecGuardianLog |/path/to/httpd-guardian </code>
-
-'''Example Usage:''' <code>SecGuardianLog |/usr/local/apache/bin/httpd-guardian </code>
-
-'''Scope:''' Main 
-
-'''Version:''' 2.0.0-2.9.x
-
-'''Supported on libModSecurity:''' TBI
-
-Guardian logging is designed to send the information about every request to an external program. Because Apache is typically deployed in a multiprocess fashion, which makes information sharing between processes difficult, the idea is to deploy a single external process to observe all requests in a stateful manner, providing additional protection.
-
-Currently the only tool known to work with guardian logging is httpd-guardian, which is part of the Apache httpd tools project [http://apache-tools.cvs.sourceforge.net/viewvc/apache-tools/apache-tools/]. The httpd-guardian tool is designed to defend against denial of service attacks. It uses the blacklist tool (from the same project) to interact with an iptables-based (on a Linux system) or pf-based (on a BSD system) firewall, dynamically blacklisting the offending IP addresses. It can also interact with SnortSam [http://www.snortsam.net]. Assuming httpd-guardian is already configured (look into the source code for the detailed instructions), you only need to add one line to your Apache configuration to deploy it:
-<pre>SecGuardianLog |/path/to/httpd-guardian</pre>
-
-; Note : This directive is not allowed inside VirtualHosts. If enabled, it must be placed in a global server-wide configuration file such as your default modsecurity.conf.
+'''Not supported in v3'''
 
 == SecHttpBlKey ==
 '''Description:''' Configures the user's registered Honeypot Project HTTP BL API Key to use with @rbl.
@@ -3984,17 +3953,7 @@ SecRule XML "@validateDTD /path/to/xml.dtd" "phase:2,id:181,deny,msg:'Failed DTD
 '''NOTE:''' You must enable the <code>SecXmlExternalEntity</code> directive.
 
 == validateHash ==
-'''Description:''' Validates REQUEST_URI that contains data protected by the hash engine.
-
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' TBI
-
-'''Example:'''
-<pre>
-# Validates requested URI that matches a regular expression.
-SecRule REQUEST_URI "@validatehash "product_info|product_list" "phase:1,deny,id:123456"
-</pre>
+'''Not supported in v3'''
 
 == validateSchema ==
 '''Description:''' Validates the XML DOM tree against the supplied XML Schema. The DOM tree must have been built previously using the XML request body processor. This operator matches when the validation fails.
