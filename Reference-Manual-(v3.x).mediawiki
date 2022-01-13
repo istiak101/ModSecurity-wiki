@@ -392,69 +392,18 @@ The possible values are:
 This directive should be used to make the presence of significant rule sets known. The entire signature will be recorded in the transaction audit log.
 
 == SecConnEngine ==
-'''Description:''' Configures the connections engine. This directive affect the directives: SecConnReadStateLimit and SecConnWriteStateLimit.
-
-'''Syntax:''' <code>SecConnEngine On|Off|DetectionOnly </code>
-
-'''Example Usage:''' <code>SecConnEngine On </code>
-
-'''Scope:''' Any
-
-'''Version:''' 2.8.0-2.9.x
-
-'''Supported on libModSecurity:''' TBI
-
-Possible values are (Same as SecRuleEngine): 
-*'''On''': process SecConn[Read|Write]StateLimit.
-*'''Off''': Ignore the directives SecConn[Read|Write]StateLimit
-*'''DetectionOnly''': process SecConn[Read|Write]StateLimit definitions in verbose mode but never executes any disruptive actions
+'''Not spported in v3'''
 
 == SecContentInjection ==
-'''Description:''' Enables content injection using actions append and prepend. 
+'''Not suported in v3'''
 
-'''Syntax:''' <code>SecContentInjection On|Off </code>
 
-'''Example Usage:''' <code>SecContentInjection On </code>
-
-'''Scope:''' Any
-
-'''Version:''' 2.5.0-2.9.x
-
-'''Supported on libModSecurity:''' TBI
-
-This directive provides an easy way to control content injection, no matter what the rules want to do. It is not necessary to have response body buffering enabled in order to use content injection.
-
-; Note : This directive must ben enabled if you want to use @rsub + the STREAM_ variables to manipulate live transactional data.
 
 == SecCookieFormat ==
-'''Description:''' Selects the cookie format that will be used in the current configuration context. 
-
-'''Syntax:''' <code>SecCookieFormat 0|1 </code>
-
-'''Example Usage:''' <code>SecCookieFormat 0 </code>
-
-'''Scope:''' Any
-
-'''Version:''' 2.0.0-2.9.x
-
-'''Supported on libModSecurity:''' TBD
-
-The possible values are:
-*'''0''': Use version 0 (Netscape) cookies. This is what most applications use. It is the default value.
-*'''1''': Use version 1 cookies.
-
-; Note : Only version 0 (Netscape) cookies is currently supported on libModSecurity (v3)
+'''Not supported in v3'''
 
 == SecCookieV0Separator ==
-'''Description:''' Specifies which character to use as the separator for cookie v0 content.
-
-'''Syntax:''' <code>SecCookieV0Separator character</code>
-
-'''Scope:''' Any
-
-'''Version:''' 2.7.0-2.9.x
-
-'''Supported on libModSecurity:''' TBI
+'''Not supported in v3'''
 
 == SecDataDir ==
 '''Description:''' Path where persistent data (e.g., IP address data, session data, and so on) is to be stored.
