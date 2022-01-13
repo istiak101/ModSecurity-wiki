@@ -1078,21 +1078,7 @@ This directive is required if you want to inspect the data transported request b
 *Off: do not buffer request bodies
 
 == SecRequestBodyInMemoryLimit ==
-'''Description''': Configures the maximum request body size that ModSecurity will store in memory.
-
-'''Syntax:''' <code>SecRequestBodyInMemoryLimit LIMIT_IN_BYTES </code>
-
-'''Example Usage:''' <code>SecRequestBodyInMemoryLimit 131072 </code>
-
-'''Scope:''' Any 
-
-'''Version:''' 2.0.0-2.9.x
-
-'''Supported on libModSecurity:''' No
-
-'''Default:''' 131072 (128 KB) 
-
-When a multipart/form-data request is being processed, once the in-memory limit is reached, the request body will start to be streamed into a temporary file on disk.
+'''Not supported in v3'''
 
 ; Note : libModSecurity is able to deal with request body in a file or in a buffer (chunked or not). Web servers have properties which controls whenever a request should be saved to a file or used as a buffer (e.g. client_body_buffer_size [https://nginx.org/en/docs/http/ngx_http_core_module.html#client_body_buffer_size]) . If it is a file, ModSecurity will use the file to perform the inspection. If not, the buffer will be used.
 
@@ -1264,26 +1250,7 @@ This directive is required if you plan to inspect HTML responses and implement r
 Every rule must provide one or more variables along with the operator that should be used to inspect them. If no actions are provided, the default list will be used. (There is always a default list, even if one was not explicitly set with SecDefaultAction.) If there are actions specified in a rule, they will be merged with the default list to form the final actions that will be used. (The actions in the rule will overwrite those in the default list.) Refer to SecDefaultAction for more information.
 
 == SecRuleInheritance ==
-'''Description:''' Configures whether the current context will inherit the rules from the parent context.
-
-'''Syntax:''' <code>SecRuleInheritance On|Off </code>
-
-'''Example Usage:''' <code>SecRuleInheritance Off </code>
-
-'''Scope:''' Any 
-
-'''Version:''' 2.0.0-2.9.x
-
-'''Supported on libModSecurity:''' TBI
-
-'''Default:''' On
-
-Sometimes when you create a more specific configuration context (for example using the <Location> container), you may wish to use a different set of rules than those used in the parent context. By setting SecRuleInheritance to Off, you prevent the parent rules to be inherited, which allows you to start from scratch. In ModSecurity 2.5.x it is not possible to override phase 1 rules from a <Location> configuration context. There are no limitations in that respect in the current development version (and there won’t be in the next major version).
-
-The possible values are: 
-*On: inherit rules from the parent context 
-*Off: do not inherit rules from the parent context
-; Note : Configuration contexts are an Apache concept. Directives <Directory>, <Files>, <Location>, and <VirtualHost> are all used to create configuration contexts. For more information, please go to the Apache documentation, under Configuration Sections [http://httpd.apache.org/docs/2.0/sections.html]. This directive does not affect how configuration options are inherited.
+'''Not supported in v3'''
 
 == SecRuleEngine ==
 '''Description:''' Configures the rules engine. 
@@ -1634,21 +1601,7 @@ SecRule REQUEST_URI|ARGS_NAMES|ARGS|XML:/* "[\;\|\`]\W*?\bmail\b" \
 </pre>
 
 == SecServerSignature ==
-'''Description:''' Instructs ModSecurity to change the data presented in the "Server:" response header token.
-
-'''Syntax:''' <code>SecServerSignature "WEB SERVER SOFTWARE"</code>
-
-'''Example Usage:''' <code>SecServerSignature "Microsoft-IIS/6.0"</code>
-
-'''Scope:''' Main
-
-'''Version:''' 2.0.0-2.9.x
-
-'''Supported on libModSecurity:''' TBI
-
-In order for this directive to work, you must set the Apache ServerTokens directive to Full. ModSecurity will overwrite the server signature data held in this memory space with the data set in this directive. If ServerTokens is not set to Full, then the memory space is most likely not large enough to hold the new data we are looking to insert.
-
-; Note : This directive is not allowed inside VirtualHosts. If enabled, it must be placed in a global server-wide configuration file such as your default modsecurity.conf.
+'''Not supported in v3'''
 
 == SecStatusEngine ==
 '''Description:''' Controls Status Reporting functionality.  Uses DNS-based reporting to send software version information to the ModSecurity Project team.
