@@ -1,6 +1,6 @@
 = ModSecurity&reg; Reference Manual =
-== Current as of v2.5.13 v2.6 v2.7 v2.8 v2.9 v3.0 ==
-=== Copyright &copy; 2004-2018 [https://www.trustwave.com/ Trustwave Holdings, Inc.] ===
+== Current as of v3.0.06 ==
+=== Copyright &copy; 2022 [https://www.trustwave.com/ Trustwave Holdings, Inc.] ===
 
 = Table of Contents =
 = Introduction =
@@ -44,24 +44,7 @@ ModSecurity is available under the Apache Software License v2 [http://www.apache
 = Installation for Apache =
 == Prerequisites ==
 
-=== ModSecurity 2.x works only with Apache 2.0.x or higher ===
-The ModSecurity team works hard to ensure that ModSecurity version 2.x will work with all versions of Apache 2.x and higher. If you find incompatibilities on any version (2.2.x, 2.4.x, or 2.6.x) please immediately inform the ModSecurity team
 
-=== mod_uniqueid ===
-Make sure you have <code>mod_unique_id</code> installed.
-mod_unique_id is packaged with Apache httpd.
-
-=== libapr and libapr-util ===
-libapr and libapr-util - http://apr.apache.org/
-
-=== libpcre ===
-http://www.pcre.org/
-
-=== libxml2 ===
-http://xmlsoft.org/downloads.html
-
-=== liblua v5.x.x ===
-This library is optional and only needed if you will be using the new Lua engine - http://www.lua.org/download.html
 
 ; Note : that ModSecurity requires the dynamic libraries. These are not built by default in the source distribution, so the binary distribution is recommended.
 
@@ -163,19 +146,7 @@ You should now have ModSecurity 2.x up and running.
 #'''--enable-lua-cache''' - Enables lua vm caching that can improve lua script performance. Difference just appears if ModSecurity must run more than one script per transaction.
 #'''--enable-request-early''' - On ModSecurity 2.6 phase one has been moved to phase 2 hook, if you want to play around it use this option.
 #'''--enable-htaccess-config''' - It will allow the follow directives to be used into .htaccess files when AllowOverride Options is set :
-<pre>
-        - SecAction
-        - SecRule
 
-        - SecRuleRemoveByMsg
-        - SecRuleRemoveByTag
-        - SecRuleRemoveById
-
-        - SecRuleUpdateActionById
-        - SecRuleUpdateTargetById
-        - SecRuleUpdateTargetByTag
-        - SecRuleUpdateTargetByMsg
-</pre>
 
 = Installation for NGINX =
 The extensibility model of the nginx server does not include dynamically loaded modules, thus ModSecurity must be compiled with the source code of the main server.  Since nginx is available on multiple Unix-based platforms (and also on Windows), for now the recommended way of obtaining ModSecurity for nginx is compilation in the designated environment.
