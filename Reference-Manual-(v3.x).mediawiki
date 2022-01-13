@@ -1,5 +1,5 @@
 = ModSecurity&reg; Reference Manual =
-== Current as of v3.0.06 ==
+== Current as of v3.0.6 ==
 === Copyright &copy; 2022 [https://www.trustwave.com/ Trustwave Holdings, Inc.] ===
 
 = Table of Contents =
@@ -225,16 +225,6 @@ Before installing ModSecurity make sure you have Visual Studio 2013 Runtime (vcr
 Vcredist can be downloaded here: http://www.visualstudio.com/downloads/download-visual-studio-vs
 (note that, there are two different versions 32 and 64b).
 
-The source code of ModSecurity’s IIS components is fully published and the binary building process is described (see README_WINDOWS.TXT). For quick installation it is highly recommended to use standard MSI installer available from SourceForge files repository of ModSecurity project or use binary package and follow the manual installation steps.
-
-Any installation errors or warning messages are logged in the application event log under 'ModSecurityIIS Installer' source.
-
-The OWASP CRS is also installed on the system drive, on the selected folder.
-It can be included in any website by adding the following line to the web.config file, in system.webServer section:
-        <ModSecurity enabled="true" configFile="c:\path\to\owasp_crs\modsecurity_iis.conf" />
-(relative path can also be used accordingly)
-== Manually Installing and Troubleshooting Setup of ModSecurity Module on IIS ==
-
 === Configuration ===
 : After the installation the module will be running in all websites by default. To remove it from a website add to web.config:
 <pre><modules>
@@ -255,17 +245,7 @@ It can be included in any website by adding the following line to the web.config
 
 : If after installation protected website responds with HTTP 503 error and event ID 2280 keeps getting logged in the application event log:
 
-<pre>
-Log Name:      Application
-Source:        Microsoft-Windows-IIS-W3SVC-WP
-Event ID:      2280
-Task Category: None
-Level:         Error
-Keywords:      Classic
-User:          N/A
-Description:
-The Module DLL C:\Windows\system32\inetsrv\modsecurityiis.dll failed to load.  The data is the error.
-</pre>
+
 
 most likely it means that the installation process has failed and the ModSecurityIIS.dll module is missing one or more libraries that it depends on. Repeating installation of the prerequisites and the module files should fix the problem. The dependency walker tool:
 
