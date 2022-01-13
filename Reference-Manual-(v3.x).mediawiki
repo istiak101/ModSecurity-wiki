@@ -6,7 +6,7 @@
 = Introduction =
 ModSecurity is a web application firewall (WAF). With over 70% of attacks now carried out over the web application level, organisations need all the help they can get in making their systems secure. WAFs are deployed to establish an increased external security layer to detect and/or prevent attacks before they reach web applications. ModSecurity provides protection from a range of attacks against web applications and allows for HTTP traffic monitoring and real-time analysis with little or no changes to existing infrastructure.
 
-== HTTP Traffic Logging ==
+=ing ==
 Web servers are typically well-equipped to log traffic in a form useful for marketing analyses, but fall short logging traffic to web applications. In particular, most are not capable of logging the request bodies. Your adversaries know this, and that is why most attacks are now carried out via POST requests, rendering your systems blind. ModSecurity makes full HTTP transaction logging possible, allowing complete requests and responses to be logged. Its logging facilities also allow fine-grained decisions to be made about exactly what is logged and when, ensuring only the relevant data is recorded. As some of the request and/or response may contain sensitive data in certain fields, ModSecurity can be configured to mask these fields before they are written to the audit log.
 
 == Real-Time Monitoring and Attack Detection ==
@@ -1832,59 +1832,16 @@ Contains the time, in microseconds, spent processing phase 4.
 '''Supported on libModSecurity:''' TBI
 
 == PERF_PHASE5 ==
-Contains the time, in microseconds, spent processing phase 5.
-
-'''Version:''' 2.6.0-2.9.x
-
-'''Supported on libModSecurity:''' TBI
+Not supported in v3
 
 == PERF_RULES ==
-PERF_RULES is a collection, that is populated with the rules hitting
-the performance threshold defined with SecRulePerfTime. The collection
-contains the time, in microseconds, spent processing the individual
-rule. The various items in the collection can be accessed via the
-rule id.
-
-'''Version:''' 2.7.0-2.9.x
-
-'''Supported on libModSecurity:''' TBI
-
-<pre>
-SecRulePerfTime            100
-
-SecRule FILES_TMPNAMES "@inspectFile /path/to/util/runav.pl" \
-  "phase:2,id:10001,deny,log,msg:'Virus scan detected an error.'"
-
-SecRule   &PERF_RULES "@eq 0"    "phase:5,id:95000,\
-  pass,log,msg:'All rules performed below processing time limit.'"
-SecRule   PERF_RULES  "@ge 1000" "phase:5,id:95001,pass,log,\
-  msg:'Rule %{MATCHED_VAR_NAME} spent at least 1000 usec.'"
-SecAction "phase:5,id:95002,pass,log, msg:'File inspection took %{PERF_RULES.10001} usec.'"
-</pre>
-
-The rule with id 10001 defines an external file inspection rule.
-The rule with id 95000 checks the size of the PERF_RULES collection.
-If the collection is empty, it writes a note in the logfile.
-Rule 95001 is executed for every item in the PERF_RULES collection.
-Every item is thus being checked against the limit of 1000 microseconds.
-If the rule spent at least that amount of time, then a note containing
-the rule id is being written to the logfile.
-The final rule 95002 notes the time spent in rule 10001 (the virus
-inspection).
+Not supported in v3
 
 == PERF_SREAD ==
-Contains the time, in microseconds, spent reading from persistent storage.
-
-'''Version:''' 2.6.0-2.9.x
-
-'''Supported on libModSecurity:''' TBI
+Not supported in v3
 
 == PERF_SWRITE ==
-Contains the time, in microseconds, spent writing to persistent storage.
-
-'''Version:''' 2.6.0-2.9.x
-
-'''Supported on libModSecurity:''' TBI
+Not supported in v3
 
 == QUERY_STRING == 
 Contains the query string part of a request URI. The value in QUERY_STRING is always provided raw, without URL decoding taking place.
