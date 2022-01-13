@@ -1,12 +1,12 @@
 = ModSecurity&reg; Reference Manual =
 == Current as of v3.0.6 ==
-=== Copyright &copy; 2022 [https://www.trustwave.com/ Trustwave Holdings, Inc.] ===ha
+=== Copyright &copy; 2022 [https://www.trustwave.com/ Trustwave Holdings, Inc.] ===
 
 = Table of Contents =
 = Introduction =
 ModSecurity is a web application firewall (WAF). With over 70% of attacks now carried out over the web application level, organisations need all the help they can get in making their systems secure. WAFs are deployed to establish an increased external security layer to detect and/or prevent attacks before they reach web applications. ModSecurity provides protection from a range of attacks against web applications and allows for HTTP traffic monitoring and real-time analysis with little or no changes to existing infrastructure.
 
-=ing ==
+== HTTP Traffic Logging ==
 Web servers are typically well-equipped to log traffic in a form useful for marketing analyses, but fall short logging traffic to web applications. In particular, most are not capable of logging the request bodies. Your adversaries know this, and that is why most attacks are now carried out via POST requests, rendering your systems blind. ModSecurity makes full HTTP transaction logging possible, allowing complete requests and responses to be logged. Its logging facilities also allow fine-grained decisions to be made about exactly what is logged and when, ensuring only the relevant data is recorded. As some of the request and/or response may contain sensitive data in certain fields, ModSecurity can be configured to mask these fields before they are written to the audit log.
 
 == Real-Time Monitoring and Attack Detection ==
@@ -1656,32 +1656,16 @@ Contains the extra request URI information, also known as path info. (For exampl
 <code>SecRule PATH_INFO "^/(bin|etc|sbin|opt|usr)" "id:33"</code>
 
 == PERF_ALL ==
-This special variable contains a string that’s a combination of all other performance variables, arranged in the same order in which they appear in the Stopwatch2 audit log header. It’s intended for use in custom Apache logs
-
-'''Version:''' 2.6.0-2.9.x
-
-'''Supported on libModSecurity:''' TBI
+Not supported in v3
 
 == PERF_COMBINED ==
-Contains the time, in microseconds, spent in ModSecurity during the current transaction. The value in this variable is arrived to by adding all the performance variables except PERF_SREAD (the time spent reading from persistent storage is already included in the phase measurements). 
-
-'''Version:''' 2.6.0-2.9.x
-
-'''Supported on libModSecurity:''' TBI
+Not supported in v3
 
 == PERF_GC ==
-Contains the time, in microseconds, spent performing garbage collection.
-
-'''Version:''' 2.6.0-2.9.x
-
-'''Supported on libModSecurity:''' TBI
+Not supported in v3
 
 == PERF_LOGGING ==
-Contains the time, in microseconds, spent in audit logging. This value is known only after the handling of a transaction is finalized, which means that it can only be logged using mod_log_config and the %{VARNAME}M syntax. 
-
-'''Version:''' 2.6.0-2.9.x
-
-'''Supported on libModSecurity:''' TBI
+Not supported in v3
 
 == PERF_PHASE1 ==
 Not supported in v3
