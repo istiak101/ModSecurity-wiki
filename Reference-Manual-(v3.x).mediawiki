@@ -664,19 +664,7 @@ Currently the only tool known to work with guardian logging is httpd-guardian, w
 If the @rbl operator uses the dnsbl.httpbl.org RBL (http://www.projecthoneypot.org/httpbl_api.php) you must provide an API key.  This key is registered to individual users and is included within the RBL DNS requests.
 
 == SecInterceptOnError ==
-'''Description:''' Configures how to respond when rule processing fails.
-
-'''Syntax:''' <code>SecInterceptOnError On|Off </code>
-
-'''Example Usage:''' <code>SecInterceptOnError On </code>
-
-'''Scope:''' Main 
-
-'''Version:''' 2.6-2.9.x
-
-'''Supported on libModSecurity:''' TBI
-
-When an operator execution fails, that is it returns greater than 0, this directive configures how to react.  When set to "Off", the rule is just ignored and the engine will continue executing the rules in phase.  When set to "On", the rule will be just dropped and no more rules will be executed in the same phase, also no interception is made.
+'''Not supported in v3'''
 
 == SecMarker ==
 '''Description:''' Adds a fixed rule marker that can be used as a target in a skipAfter action. A SecMarker directive essentially creates a rule that does nothing and whose only purpose is to carry the given ID.
@@ -704,44 +692,10 @@ SecMarker END_HOST_CHECK
 </pre>
 
 == SecPcreMatchLimit ==
-'''Description''': Sets the match limit in the PCRE library. 
-
-'''Syntax:''' <code>SecPcreMatchLimit value </code>
-
-'''Example Usage''': <code>SecPcreMatchLimit 1500 </code>
-
-'''Scope:''' Main
-
-'''Version''': 2.5.12-2.9.x
-
-'''Supported on libModSecurity:''' TBI
-
-'''Default:''' 1500
-
-The default can be changed when ModSecurity is prepared for compilation: the --enable-pcre-match-limit=val configure option will set a custom default and the --disable-pcre-match-limit option will revert back to the default of the PCRE library.
-For more information, refer to the pcre_extra field in the pcreapi man page.
-
-; Note : This directive is not allowed inside VirtualHosts. If enabled, it must be placed in a global server-wide configuration file such as your default modsecurity.conf.
+'''Not supported in v3'''
 
 == SecPcreMatchLimitRecursion ==
-'''Description:''' Sets the match limit recursion in the PCRE library. 
-
-'''Syntax:''' <code>SecPcreMatchLimitRecursion value </code>
-
-'''Example Usage:''' <code>SecPcreMatchLimitRecursion 1500 </code>
-
-'''Scope:''' Main
-
-'''Version:''' 2.5.12-2.9.x
-
-'''Supported on libModSecurity:''' TBI
-
-'''Default:''' 1500
-
-The default can be changed when ModSecurity is prepared for compilation: the --enable-pcre-match-limit-recursion=val configure option will set a custom default and the --disable-pcre-match-limit-recursion option will revert back to the default of the PCRE library.
-For more information, refer to the pcre_extra field in the pcreapi man page.
-
-; Note : This directive is not allowed inside VirtualHosts. If enabled, it must be placed in a global server-wide configuration file such as your default modsecurity.conf.
+'''Not supported in v3'''
 
 == SecPdfProtect ==
 '''Description:''' Enables the PDF XSS protection functionality. 
