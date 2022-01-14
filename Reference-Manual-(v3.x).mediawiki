@@ -4,7 +4,7 @@
 
 = Table of Contents =
 = Introduction =
-== WARNING: This document is only in the beginning stages of being adapted and modified from the v2 document. Do not rely on what you see here.
+== WARNING: This document is only in the beginning stages of being adapted and modified from the v2 document. Do not rely on what you see here. ==
 
 ModSecurity is a web application firewall (WAF). With over 70% of attacks now carried out over the web application level, organisations need all the help they can get in making their systems secure. WAFs are deployed to establish an increased external security layer to detect and/or prevent attacks before they reach web applications. ModSecurity provides protection from a range of attacks against web applications and allows for HTTP traffic monitoring and real-time analysis with little or no changes to existing infrastructure.
 
@@ -202,7 +202,7 @@ This directive is needed if a backend web application is using a nonstandard arg
 
 '''Scope:''' Any
 
-'''Version:''' 2.0.0
+'''Version:''' 3.0.0
 
 The SecAuditEngine directive is used to configure the audit engine, which logs complete transactions. ModSecurity is currently able to log most, but not all transactions. Transactions involving errors (e.g., 400 and 404 transactions) use a different execution path, which ModSecurity does not support.
 
@@ -228,7 +228,7 @@ SecAuditLogRelevantStatus ^(?:5|4(?!04))
 
 '''Syntax:''' <code>SecAuditLog /path/to/audit.log</code> 
 
-'''Scope:''' Any Version: 2.0.0
+'''Scope:''' Any Version: 3.0.0
 
 This file will be used to store the audit log entries if serial audit logging format is used. If concurrent audit logging format is used this file will be used as an index, and contain a record of all audit log files created. If you are planning to use concurrent audit logging to send your audit log data off to a remote server you will need to deploy the ModSecurity Log Collector (mlogc), like this:
 <pre>
@@ -301,7 +301,7 @@ This feature is not available on operating systems not supporting octal file mod
 
 '''Example Usage:''' <code>SecAuditLogParts ABCFHZ</code> 
 
-'''Scope:''' Any Version: 2.0.0
+'''Scope:''' Any Version: 3.0.0
 
 '''Default:''' ABCFHZ Note
 
@@ -330,7 +330,7 @@ Available audit log parts:
 
 '''Scope:''' Any 
 
-'''Version:''' 2.0.0
+'''Version:''' 3.0.0
 
 '''Dependencies/Notes:''' Must have SecAuditEngine set to RelevantOnly. Additionally, the auditlog action is present by default in rules, this will make the engine bypass the 'SecAuditLogRelevantStatus' and send rule matches to the audit log regardless of status. You must specify noauditlog in the rules manually or set it in SecDefaultAction.
 
@@ -359,7 +359,7 @@ As with all logging mechanisms, ensure that you specify a file system location t
 
 '''Scope:''' Any
 
-'''Version:''' 2.0.0 
+'''Version:''' 3.0.0 
 
 The possible values are:
 ; Serial : Audit log entries will be stored in a single file, specified by SecAuditLog. This is conve- nient for casual use, but it can slow down the server, because only one audit log entry can be written to the file at any one time.
@@ -389,8 +389,6 @@ The possible values are:
 
 '''Version:''' 2.5.0-3.x
 
-'''Supported on libModSecurity:''' Yes
-
 This directive should be used to make the presence of significant rule sets known. The entire signature will be recorded in the transaction audit log.
 
 == SecConnEngine ==
@@ -400,7 +398,6 @@ This directive should be used to make the presence of significant rule sets know
 '''Not suported in v3'''
 
 
-
 == SecCookieFormat ==
 '''Not supported in v3'''
 
@@ -408,36 +405,18 @@ This directive should be used to make the presence of significant rule sets know
 '''Not supported in v3'''
 
 == SecDataDir ==
-'''Description:''' Path where persistent data (e.g., IP address data, session data, and so on) is to be stored.
-
-'''Syntax:''' <code>SecDataDir /path/to/dir </code>
-
-'''Example Usage:''' <code>SecDataDir /usr/local/apache/logs/data </code>
-
-'''Scope:''' Main
-
-'''Version:''' 2.0.0-2.9.x
-
-'''Supported on libModSecurity:''' No
-
-This directive must be provided before initcol, setsid, and setuid can be used. The directory to which the directive points must be writable by the web server user.
-
-; Note : This directive is not allowed inside VirtualHosts. If enabled, it must be placed in a global server-wide configuration file such as your default modsecurity.conf.
-
-; Note : SecDataDir is not currently supported. Collections are kept in memory (in_memory-per_process) for now.
+'''Not supported in v3'''
 
 == SecDebugLog ==
 '''Description''': Path to the ModSecurity debug log file. 
 
 '''Syntax:''' <code>SecDebugLog /path/to/modsec-debug.log </code>
 
-'''Example Usage:''' <code>SecDebugLog /usr/local/apache/logs/modsec-debug.log </code>
+'''Example Usage:''' <code>SecDebugLog /var/log/modsec_debug.log </code>
 
 '''Scope:''' Any 
 
-'''Version:''' 2.0.0
-
-'''Supported on libModSecurity:''' Yes
+'''Version:''' 3.0.0
 
 == SecDebugLogLevel ==
 '''Description:''' Configures the verboseness of the debug log data. 
@@ -448,15 +427,13 @@ This directive must be provided before initcol, setsid, and setuid can be used. 
 
 '''Scope:''' Any
 
-'''Version:''' 2.0.0
+'''Version:''' 3.0.0
 
-'''Supported on libModSecurity:''' Yes
-
-Messages at levels 1–3 are always copied to the Apache error log. Therefore you can always use level 0 as the default logging level in production if you are very concerned with performance. Having said that, the best value to use is 3. Higher logging levels are not recommended in production, because the heavy logging affects performance adversely.
+Always having the debug log active in a production environment is typically not advised. Even when investigating a specific issue be aware that using a value of 4 or higher can impact performance significantly.
 
 The possible values for the debug log level are: 
 *0: no logging 
-*1: errors (intercepted requests) only 
+*1: errors only 
 *2: warnings
 *3: notices 
 *4: details of how transactions are handled 
@@ -472,9 +449,7 @@ The possible values for the debug log level are:
 
 '''Scope:''' Any 
 
-'''Version:''' 2.0.0
-
-'''Supported on libModSecurity:''' Yes
+'''Version:''' 3.0.0
 
 '''Default:''' phase:2,log,auditlog,pass
 
@@ -588,9 +563,7 @@ SecMarker END_HOST_CHECK
 
 '''Scope:''' Any 
 
-'''Version:''' 2.9.0-RC1+
-
-'''Supported on libModSecurity:''' Yes
+'''Version:''' 3.0.0
 
 This is an optional directive that allow the user to load rules from a remote server. Notice that besides the URL the user also needs to supply a key, which could be used by the target server to provide different content for different keys. 
 
@@ -647,13 +620,11 @@ This directive is required if you want to inspect the data transported request b
 
 '''Syntax:''' <code>SecRequestBodyJsonDepthLimit LIMIT </code>
 
-'''Example Usage:''' <code>SecRequestBodyJsonDepthLimit 5000 </code>
+'''Example Usage:''' <code>SecRequestBodyJsonDepthLimit 100 </code>
 
 '''Scope:''' Any 
 
-'''Version:''' 2.9.5- , 3.0.6-
-
-'''Supported on libModSecurity:''' Yes - as of 3.0.6
+'''Version:''' 3.0.6
 
 '''Default:''' 10000 
 
@@ -703,9 +674,7 @@ Generally speaking, the default value is not small enough. For most applications
 
 '''Scope:''' Any 
 
-'''Version''': 2.6.0
-
-'''Supported on libModSecurity:''' Yes
+'''Version''': 3.0.0
 
 By default, ModSecurity will reject a request body that is longer than specified.  This is problematic especially when ModSecurity is being run in DetectionOnly mode and the intent is to be totally passive and not take any disruptive actions against the transaction. With the ability to choose what happens once a limit is reached, site administrators can choose to inspect only the first part of the request, the part that can fit into the desired limit, and let the rest through.  This is not ideal from a possible evasion issue perspective, however it may be acceptable under certain circumstances.
 
@@ -803,9 +772,7 @@ This directive is required if you plan to inspect HTML responses and implement r
 
 '''Scope:''' Any
 
-'''Version:''' 2.0.0
-
-'''Supported on libModSecurity:''' Yes
+'''Version:''' 3.0.0
 
 Every rule must provide one or more variables along with the operator that should be used to inspect them. If no actions are provided, the default list will be used. (There is always a default list, even if one was not explicitly set with SecDefaultAction.) If there are actions specified in a rule, they will be merged with the default list to form the final actions that will be used. (The actions in the rule will overwrite those in the default list.) Refer to SecDefaultAction for more information.
 
@@ -821,9 +788,7 @@ Every rule must provide one or more variables along with the operator that shoul
 
 '''Scope''': Any 
 
-'''Version:''' 2.0.0
-
-'''Supported on libModSecurity:''' Yes
+'''Version:''' 3.0.0
 
 '''Default:''' Off
 
@@ -835,8 +800,6 @@ The possible values are:
 == SecRulePerfTime ==
 '''Not supported in v3'''
 
-
-
 == SecRuleRemoveById ==
 '''Description:''' Removes the matching rules from the current configuration context. 
 
@@ -845,9 +808,7 @@ The possible values are:
 
 '''Scope:''' Any
 
-'''Version:''' 2.0.0 - 3.x
-
-'''Supported on libModSecurity:''' Yes
+'''Version:''' 3.0.0
 
 This directive supports multiple parameters, each of which can be a rule ID or a range. Parameters that contain spaces must be delimited using double quotes.
 
@@ -862,9 +823,7 @@ This directive supports multiple parameters, each of which can be a rule ID or a
 
 '''Scope:''' Any
 
-'''Version:''' 2.0.0-3.x
-
-'''Supported on libModSecurity:''' Yes
+'''Version:''' 3.0.0
 
 Normally, you would use SecRuleRemoveById to remove rules, but that requires the rules to have IDs defined. If they don’t, then you can remove them with SecRuleRemoveByMsg, which matches a regular expression against rule messages.
 
@@ -879,9 +838,7 @@ Normally, you would use SecRuleRemoveById to remove rules, but that requires the
 
 '''Scope:''' Any
 
-'''Version:''' 2.6-3.x
-
-'''Supported on libModSecurity:''' Yes
+'''Version:''' 3.0.0
 
 Normally, you would use SecRuleRemoveById to remove rules, but that requires the rules to have IDs defined. If they don’t, then you can remove them with SecRuleRemoveByTag, which matches a regular expression against rule tag data.  This is useful if you want to disable entire groups of rules based on tag data.  Example tags used in the OWASP ModSecurity CRS include:
 *AUTOMATION/MALICIOUS
@@ -913,9 +870,7 @@ Description: This directive creates a special rule that executes a Lua script to
 
 '''Scope:''' Any
 
-'''Version:''' 2.5.0-3.x
-
-'''Supported on libModSecurity:''' Yes
+'''Version:''' 3.0.0
 
 ; Note : All Lua scripts are compiled at configuration time and cached in memory. To reload scripts you must reload the entire ModSecurity configuration by restarting Apache.
 
@@ -1121,9 +1076,7 @@ SecRule REQUEST_URI|ARGS_NAMES|ARGS|XML:/* "[\;\|\`]\W*?\bmail\b" \
 
 '''Scope:''' Any
 
-'''Version:''' 2.7-3.x
-
-'''Supported on libModSecurity:''' Yes
+'''Version:''' 3.0-0
 
 This directive will append (or replace) variables to the current target list of the specified rule with the targets provided in the second parameter.
 
@@ -1825,48 +1778,16 @@ This is a special collection that provides access to the id, rev, severity, logd
 <code>SecRule &REQUEST_HEADERS:Host "@eq 0" "log,deny,id:59,setvar:tx.varname=%{RULE.id}"</code>
 
 == SCRIPT_BASENAME ==
-This variable holds just the local filename part of SCRIPT_FILENAME.
-
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' TBI
-
-<code>SecRule SCRIPT_BASENAME "^login\.php$" "id:60"</code>
-
-; Note :  Not available in proxy mode.
+Not supported in v3
 
 == SCRIPT_FILENAME ==
-This variable holds the full internal path to the script that will be used to serve the request.
-
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' TBI 
-
-<code>SecRule SCRIPT_FILENAME "^/usr/local/apache/cgi-bin/login\.php$" "id:61"</code>
-
-; Note : Not available in proxy mode.
+Not supported in v3
 
 == SCRIPT_GID ==
-This variable holds the numerical identifier of the group owner of the script.
-
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' TBI
-
-<code>SecRule SCRIPT_GID "!^46$" "id:62"</code>
-
-; Note : Not available in proxy mode.
+Not supported in v3
 
 == SCRIPT_GROUPNAME ==
-This variable holds the name of the group owner of the script.
-
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' TBI 
-
-<code>SecRule SCRIPT_GROUPNAME "!^apache$" "id:63"</code>
-
-; Note : Not available in proxy mode.
+Not supported in v3
 
 == SCRIPT_MODE ==
 Not supported in v3
@@ -2021,11 +1942,7 @@ SecRule USERID "admin" "id:85"
 </pre>
 
 == USERAGENT_IP == 
-This variable is created when running modsecurity with apache2.4 and will contains the client ip address set by mod_remoteip in proxied connections.
-
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' TBI
+Not supported in v3
 
 == WEBAPPID ==
 This variable contains the current application name, which is set in configuration using SecWebAppId.
@@ -2035,14 +1952,7 @@ This variable contains the current application name, which is set in configurati
 '''Supported on libModSecurity:''' TBI
 
 == WEBSERVER_ERROR_LOG ==
-
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' TBI
-
-Contains zero or more error messages produced by the web server. This variable is best accessed from phase 5 (logging).
-
-<code>SecRule WEBSERVER_ERROR_LOG "File does not exist" "phase:5,id:86,t:none,nolog,pass,setvar:TX.score=+5"</code>
+Not supported in v3
 
 == XML ==
 Special collection used to interact with the XML parser. It can be used standalone as a target for the validateDTD and validateSchema operator. Otherwise, it must contain a valid XPath expression, which will then be evaluated against a previously parsed XML DOM tree.
