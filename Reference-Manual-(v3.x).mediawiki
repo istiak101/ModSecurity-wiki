@@ -1,10 +1,10 @@
-= ModSecurity&reg; Reference Manual =
+= DRAFTDRAFTDRAFT  ModSecurity&reg; Reference Manual DRAFTDRAFTDRAFT =
 == Current as of v3.0.6 ==
 === Copyright &copy; 2022 [https://www.trustwave.com/ Trustwave Holdings, Inc.] ===
 
 = Table of Contents =
 = Introduction =
-WARNING: This document is only in the beginning stages of being adapted and modified from the v2 document. Do not rely on what you see here.
+== WARNING: This document is only in the beginning stages of being adapted and modified from the v2 document. Do not rely on what you see here.
 
 ModSecurity is a web application firewall (WAF). With over 70% of attacks now carried out over the web application level, organisations need all the help they can get in making their systems secure. WAFs are deployed to establish an increased external security layer to detect and/or prevent attacks before they reach web applications. ModSecurity provides protection from a range of attacks against web applications and allows for HTTP traffic monitoring and real-time analysis with little or no changes to existing infrastructure.
 
@@ -1869,54 +1869,16 @@ This variable holds the name of the group owner of the script.
 ; Note : Not available in proxy mode.
 
 == SCRIPT_MODE ==
-This variable holds the script’s permissions mode data (e.g., 644).
-
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' TBI  
-
-<pre>
-# Do not allow scripts that can be written to
-SecRule SCRIPT_MODE "^(2|3|6|7)$" "id:64"
-</pre>
-
-; Note : Not available in proxy mode.
+Not supported in v3
 
 == SCRIPT_UID ==
-This variable holds the numerical identifier of the owner of the script.
-
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' TBI 
-
-<pre>
-# Do not run any scripts that are owned 
-# by Apache (Apache's user id is 46) 
-SecRule SCRIPT_UID "!^46$" "id:65"
-</pre>
-
-; Note : Not available in proxy mode.
+Not supported in v3
 
 == SCRIPT_USERNAME ==
-This variable holds the username of the owner of the script.
-
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' TBI 
-
-<pre>
-# Do not run any scripts owned by Apache SecRule 
-SCRIPT_USERNAME "^apache$" "id:66"
-</pre>
-
-; Note : Not available in proxy mode.
+Not supported in v3
 
 == SDBM_DELETE_ERROR ==
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' No
-
-This variable is set to 1 when APR fails to delete SDBM entries.
+Not supported in v3
 
 == SERVER_ADDR ==
 This variable contains the IP address of the server.
