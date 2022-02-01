@@ -14,9 +14,10 @@ If your distribution is missing and you manage to compile it, don't forget to ad
 4. [Amazon Linux 2](#amazon-linux-2)
 5. [CentOS 6.x](#centos-6x)
 6. [CentOS 6.5](#centos-65-minimal)
-7. [Mac OSX 10.13](#mac-osx-1013)
-8. [AWS Linux - RPM](#aws-linux-rpm)
-9. [CentOS 7 - RPM](#centos-7-rpm)
+7. [Ubuntu 18.04]
+8. [Mac OSX 10.13](#mac-osx-1013)
+9. [AWS Linux - RPM](#aws-linux-rpm)
+10. [CentOS 7 - RPM](#centos-7-rpm)
 
 ## Centos 7 Minimal
 
@@ -309,6 +310,23 @@ cd /opt/nginx-1.9.2
 ./configure --add-module=/opt/ModSecurity-nginx 
 make
 make install
+```
+
+## Ubuntu 18.04
+
+### libModSecurity
+
+```sh
+$ sudo apt-get install git g++ apt-utils autoconf automake build-essential libcurl4-openssl-dev libgeoip-dev liblmdb-dev libpcre++-dev libtool libxml2-dev libyajl-dev pkgconf wget zlib1g-dev
+
+$ git clone https://github.com/SpiderLabs/ModSecurity
+$ cd ModSecurity/
+$ git submodule init
+$ git submodule update
+$ sh build.sh
+$ ./configure
+$ make
+$ make install
 ```
 
 ## Mac OSX 10.13
