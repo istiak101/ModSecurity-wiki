@@ -14,7 +14,7 @@ If your distribution is missing and you manage to compile it, don't forget to ad
 4. [Amazon Linux 2](#amazon-linux-2)
 5. [CentOS 6.x](#centos-6x)
 6. [CentOS 6.5](#centos-65-minimal)
-7. [Ubuntu 18.04](#ubuntu-18.04)
+7. [Ubuntu 18.04](#ubuntu-1804)
 8. [Mac OSX 10.13](#mac-osx-1013)
 9. [AWS Linux - RPM](#aws-linux-rpm)
 10. [CentOS 7 - RPM](#centos-7-rpm)
