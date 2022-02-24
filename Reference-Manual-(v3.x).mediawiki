@@ -537,12 +537,6 @@ SecMarker END_HOST_CHECK
 == SecPcreMatchLimitRecursion ==
 '''Not supported in v3'''
 
-== SecSensorId ==
-'''Not supported in v3'''
-
-== SecConnWriteStateLimit ==
-'''Not supported in v3'''
-
 == SecRemoteRules ==
 '''Description''': Load rules from a given file hosted on a HTTPS site.
 
@@ -821,32 +815,13 @@ Normally, you would use SecRuleRemoveById to remove rules, but that requires the
 == SecRuleRemoveByTag ==
 '''Description:''' Removes the matching rules from the current configuration context. 
 
-'''Syntax:''' <code>SecRuleRemoveByTag REGEX </code>
+'''Syntax:''' <code>SecRuleRemoveByTag STRING </code>
 
 '''Example Usage:''' <code>SecRuleRemoveByTag "WEB_ATTACK/XSS" </code>
 
-'''Scope:''' Any
-
 '''Version:''' 3.0.0
 
-Normally, you would use SecRuleRemoveById to remove rules, but that requires the rules to have IDs defined. If they don’t, then you can remove them with SecRuleRemoveByTag, which matches a regular expression against rule tag data.  This is useful if you want to disable entire groups of rules based on tag data.  Example tags used in the OWASP ModSecurity CRS include:
-*AUTOMATION/MALICIOUS
-*AUTOMATION/MISC
-*AUTOMATION/SECURITY_SCANNER
-*LEAKAGE/SOURCE_CODE_ASP_JSP
-*LEAKAGE/SOURCE_CODE_CF
-*LEAKAGE/SOURCE_CODE_PHP
-*WEB_ATTACK/CF_INJECTION
-*WEB_ATTACK/COMMAND_INJECTION
-*WEB_ATTACK/FILE_INJECTION
-*WEB_ATTACK/HTTP_RESPONSE_SPLITTING
-*WEB_ATTACK/LDAP_INJECTION
-*WEB_ATTACK/PHP_INJECTION
-*WEB_ATTACK/REQUEST_SMUGGLING
-*WEB_ATTACK/SESSION_FIXATION
-*WEB_ATTACK/SQL_INJECTION
-*WEB_ATTACK/SSI_INJECTION
-*WEB_ATTACK/XSS
+Normally, you would use SecRuleRemoveById to remove rules, but it may occasionally be easier to disable an entire group of rules with SecRuleRemoveByTag. The match performed here is a simple string match, which is different from ModSecurity v2 where it is a regular expression.
 
 ; Note : This directive must be specified after the rule in which it is disabling. This should be used within local custom rule files that are processed after third party rule sets. Example file - modsecurity_crs_60_customrules.conf.
 
@@ -1101,6 +1076,9 @@ SecRule REQUEST_URI|ARGS_NAMES|ARGS|XML:/* "[\;\|\`]\W*?\bmail\b" \
      "phase:2,rev:'2.1.1',capture,t:none,t:htmlEntityDecode,t:compressWhitespace,t:lowercase,ctl:auditLogParts=+E,block,msg:'System Command Injection',id:'958895',tag:'WEB_ATTACK/COMMAND_INJECTION',tag:'WASCTC/WASC-31',tag:'OWASP_TOP_10/A1',tag:'PCI/6.5.2',logdata:'%{TX.0}',severity:'2',setvar:'tx.msg=%{rule.msg}',setvar:tx.anomaly_score=+%{tx.critical_anomaly_score},setvar:tx.command_injection_score=+%{tx.critical_anomaly_score},setvar:tx.%{rule.id}-WEB_ATTACK/COMMAND_INJECTION-%{matched_var_name}=%
 {tx.0}""
 </pre>
+
+== SecSensorId ==
+'''Not supported in v3'''
 
 == SecServerSignature ==
 '''Not supported in v3'''
@@ -1358,9 +1336,7 @@ This variable holds the authentication method used to validate a user, if any of
 <code>SecRule AUTH_TYPE "Basic" "id:14"</code>
 
 == DURATION ==
-Contains the number of milliseconds elapsed since the beginning of the current transaction. Available starting with 2.6.0.
-
-; Note : Starting with ModSecurity 2.7.0 the time is microseconds.
+Contains the number of milliseconds elapsed since the beginning of the current transaction.
 
 == ENV == 
 Collection that provides access to environment variables set by ModSecurity or other server modules. Requires a single parameter to specify the name of the desired variable.
@@ -1835,23 +1811,11 @@ This variable holds the full status line sent by the server (including the reque
 SecRule STATUS_LINE "@contains 500" "phase:3,id:49,log,pass,logdata:'Application error detected!,t:none"
 </pre>
 
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' TBI
-
 == STREAM_INPUT_BODY ==
 Not supported in v3
 
 == STREAM_OUTPUT_BODY ==
-This variable give access to the raw response body content.  This variable is best used for case:
-
-#For data substitution - using @rsub against this variable allows you to manipulate live request body data.  Example - to remove offending payloads or to substitute benign data.
-
-'''Version:''' 2.6.0-2.9.x
-
-'''Supported on libModSecurity:''' TBD
-
-; Note : You must enable the SecStreamOutBodyInspection directive
+Not supported in v3
 
 == TIME ==
 This variable holds a formatted string representing the time (hour:minute:second).
