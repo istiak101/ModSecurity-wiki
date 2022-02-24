@@ -174,9 +174,7 @@ These rules, along with the Core rules files, should be contained in files outsi
 
 '''Syntax:''' <code>SecAction "action1,action2,action3,...“</code>
 
-'''Scope:''' Any
-
-'''Version:''' 2.0.0
+'''Version:''' 3.0.0
 
 This directive is commonly used to set variables and initialize persistent collections using the initcol action. For example:
 <pre>SecAction nolog,phase:1,initcol:RESOURCE=%{REQUEST_FILENAME}</pre>
@@ -187,9 +185,7 @@ This directive is commonly used to set variables and initialize persistent colle
 
 '''Default:''' & 
 
-'''Scope:''' Main(< 2.7.0), Any(2.7.0)
-
-'''Version:''' 2.0.0
+'''Version:''' 3.0.0
 
 This directive is needed if a backend web application is using a nonstandard argument separator. Applications are sometimes (very rarely) written to use a semicolon separator. You should not change the default setting unless you establish that the application you are working with requires a different separator. If this directive is not set properly for each web application, then ModSecurity will not be able to parse the arguments appropriately and the effectiveness of the rule matching will be significantly decreased.
 
@@ -200,40 +196,38 @@ This directive is needed if a backend web application is using a nonstandard arg
 
 '''Default:''' Off 
 
-'''Scope:''' Any
-
 '''Version:''' 3.0.0
 
-The SecAuditEngine directive is used to configure the audit engine, which logs complete transactions. ModSecurity is currently able to log most, but not all transactions. Transactions involving errors (e.g., 400 and 404 transactions) use a different execution path, which ModSecurity does not support.
+The SecAuditEngine directive is used to configure the audit engine, which logs complete transactions.
 
 The possible values for the audit log engine are as follows:
 *'''On''': log all transactions
 *'''Off''': do not log any transactions
 *'''RelevantOnly''': only the log transactions that have triggered a warning or an error, or have a status code that is considered to be relevant (as determined by the SecAuditLogRelevantStatus directive)
 
-; Note : If you need to change the audit log engine configuration on a per-transaction basis (e.g., in response to some transaction data), use the ctl action.
+; Note : If you need to change the audit log engine configuration on a per-transaction basis (e.g., in response to some transaction data), use the ctl action (available as of 2cde1933a7be54cac64f960b84441b814e7722f6).
 
 The following example demonstrates how SecAuditEngine is used:
 <pre>
 SecAuditEngine RelevantOnly
 SecAuditLog logs/audit/audit.log
 SecAuditLogParts ABCFHZ 
-SecAuditLogType concurrent 
+SecAuditLogType Concurrent 
 SecAuditLogStorageDir logs/audit 
 SecAuditLogRelevantStatus ^(?:5|4(?!04))
 </pre>
 
 == SecAuditLog ==
-'''Description:''' Defines the path to the main audit log file (serial logging format) or the concurrent logging index file (concurrent logging format). When used in combination with mlogc (only possible with concurrent logging), this directive defines the mlogc location and command line.
+'''Description:''' Defines the path to the main audit log file (serial logging format), or the concurrent logging index file (concurrent logging format), or the url (HTTPS).
 
 '''Syntax:''' <code>SecAuditLog /path/to/audit.log</code> 
 
-'''Scope:''' Any Version: 3.0.0
+'''Version:''' 3.0.0
 
-This file will be used to store the audit log entries if serial audit logging format is used. If concurrent audit logging format is used this file will be used as an index, and contain a record of all audit log files created. If you are planning to use concurrent audit logging to send your audit log data off to a remote server you will need to deploy the ModSecurity Log Collector (mlogc), like this:
-<pre>
-SecAuditLog "|/path/to/mlogc /path/to/mlogc.conf"
-</pre>
+This file will be used to store the audit log entries if serial audit logging format is used. If concurrent audit logging format is used this file will be used as an index, and contain a record of all audit log files created.
+
+If using <code>SecAuditLogType HTTPS</code> specify the destination url. E.g. <code>SecAuditLog http://xxx.xxx.xxx.xxx:port</code> 
+
 ; Note : This audit log file is opened on startup when the server typically still runs as root. You should not allow non-root users to have write privileges for this file or for the directory.
 
 == SecAuditLog2 ==
@@ -271,9 +265,7 @@ Example:
 
 '''Default:''' Native
 
-'''Scope:''' Any 
-
-'''Version:''' 2.9.1
+'''Version:''' 3.0.0
 
 ; Note : The JSON format is only available if ModSecurity was compiled with support to JSON via the YAJL library. During the compilation time, the yajl-dev package (or similar) must be part of the system. The configure scripts provides information if the YAJL support was enabled or not.
 
@@ -357,17 +349,11 @@ As with all logging mechanisms, ensure that you specify a file system location t
 
 '''Example Usage:''' <code>SecAuditLogType Serial</code>
 
-'''Scope:''' Any
-
 '''Version:''' 3.0.0 
 
 The possible values are:
-; Serial : Audit log entries will be stored in a single file, specified by SecAuditLog. This is conve- nient for casual use, but it can slow down the server, because only one audit log entry can be written to the file at any one time.
-; Concurrent : One file per transaction is used for audit logging. This approach is more scalable when heavy logging is required (multiple transactions can be recorded in parallel). It is also the only choice if you need to use remote logging.
-
-; HTTPS : This functionality is only available on libModSecurity and its currently in testing phase. Depending on the amount of request that you have, it may be suitable. Use the URL of your endpoint instead of the path to a file.
-
-; Note : HTTPS audit log type is currently only supported on libModSecurity.
+; Serial : Audit log entries will be stored in a single file, specified by SecAuditLog. This is convenient for casual use, but it can slow down the server, because only one audit log entry can be written to the file at any one time.
+; Concurrent : One file per transaction is used for audit logging. This approach is more scalable when heavy logging is required (multiple transactions can be recorded in parallel).
 
 == SecCacheTransformations ==
 ''Not supported in v3''' 
@@ -393,6 +379,12 @@ This directive should be used to make the presence of significant rule sets know
 
 == SecConnEngine ==
 '''Not spported in v3'''
+
+== SecConnReadStateLimit ==
+'''Not supported in v3'''
+
+== SecConnWriteStateLimit ==
+'''Not supported in v3'''
 
 == SecContentInjection ==
 '''Not suported in v3'''
@@ -543,9 +535,6 @@ SecMarker END_HOST_CHECK
 '''Not supported in v3'''
 
 == SecPcreMatchLimitRecursion ==
-'''Not supported in v3'''
-
-== SecConnReadStateLimit ==
 '''Not supported in v3'''
 
 == SecSensorId ==
