@@ -1192,9 +1192,7 @@ Possible values are:
 
 '''Scope:''' Any 
 
-'''Version:''' 2.0.0-3.x
-
-'''Supported on libModSecurity:''' Yes
+'''Version:''' 3.0.0
 
 '''Default:''' default
 
@@ -1355,7 +1353,7 @@ SecRule TX:ANOMALY_SCORE "@gt 0" "phase:5,id:16,msg:'%{env.ssl_cipher}'"
 ; Note : Use setenv to set environment variables to be accessed by Apache.
 
 == FILES == 
-Contains a collection of original file names (as they were called on the remote user’s filesys- tem). Available only on inspected multipart/form-data requests.
+Contains a collection of original file names (as they were called on the remote user’s filesystem). Available only on inspected multipart/form-data requests.
 
 <code>SecRule FILES "@rx \.conf$" "id:17"</code>
 
@@ -1477,7 +1475,7 @@ SecRule ARGS pattern "chain,deny,id:28"
 == MODSEC_BUILD == 
 This variable holds the ModSecurity build number. This variable is intended to be used to check the build number prior to using a feature that is available only in a certain build. Example:
 <pre>
-SecRule MODSEC_BUILD "!@ge 02050102" "skipAfter:12345,id:29"
+SecRule MODSEC_BUILD "!@ge 030006100" "skipAfter:12345,id:29"
 SecRule ARGS "@pm some key words" "id:12345,deny,status:500"
 </pre>
 
@@ -1900,9 +1898,7 @@ Not supported in v3
 == WEBAPPID ==
 This variable contains the current application name, which is set in configuration using SecWebAppId.
 
-'''Version:''' 2.0.0-2.9.x
-
-'''Supported on libModSecurity:''' TBI
+'''Version:''' 3.0.0
 
 == WEBSERVER_ERROR_LOG ==
 Not supported in v3
@@ -2566,20 +2562,7 @@ SecRule ARGS "test" "phase:2,log,pass,setvar:TX.test=+1,id:124"
 </pre>
 
 == pause ==
-'''Description:''' Pauses transaction processing for the specified number of milliseconds. Starting with ModSecurity 2.7 this feature also supports macro expansion.
-
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' TBI
-
-'''Action Group:''' Disruptive
-
-'''Example:'''
-<pre>
-SecRule REQUEST_HEADERS:User-Agent "Test" "log,pause:5000,id:125"
-</pre>
-
-; Warning : This feature can be of limited benefit for slowing down brute force authentication attacks, but use with care. If you are under a denial of service attack, the pause feature may make matters worse, as it will cause an entire Apache worker (process or thread, depending on the deployment mode) to sit idle until the pause is completed.
+''Not supported in v3''' 
 
 == phase ==
 '''Description''': Places the rule or chain into one of five available processing phases. It can also be used in SecDefaultAction to establish the rule defaults.
@@ -2608,23 +2591,7 @@ SecRule REQUEST_HEADERS:User-Agent "Test" "phase:request,log,deny,id:127"
 '''Not supported in v3'''
 
 == proxy ==
-'''Description:''' Intercepts the current transaction by forwarding the request to another web server using the proxy backend. The forwarding is carried out transparently to the HTTP client (i.e., there’s no external redirection taking place).
-
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' TBI
-
-'''Action Group:''' Disruptive
-
-'''Example:'''
-<pre>
-SecRule REQUEST_HEADERS:User-Agent "Test" log,id:129,proxy:http://honeypothost/
-SecRule REQUEST_URI "@streq /test.txt" "phase:1,proxy:'[nocanon]http://$ENV{SERVER_NAME}:$ENV{SERVER_PORT}/test.txt',id:500005"
-</pre>
-
-For this action to work, mod_proxy must also be installed. This action is useful if you would like to proxy matching requests onto a honeypot web server, and especially in combination with IP address or session tracking.
-
-; Note: As of v2.9.1 the proxy action can receive a special parameter named "[nocanon]". The "[nocanon]" parameter will make the url to be delivered to the backend on its original format (raw). Further information about "nocanon" is available here: https://httpd.apache.org/docs/2.2/pt-br/mod/mod_proxy.html.
+'''Not supported in v3'''
 
 == redirect ==
 '''Description:''' Intercepts transaction by issuing an external (client-visible) redirection to the given location..
@@ -3098,25 +3065,7 @@ SecRule REMOTE_ADDR "@geoLookup" "phase:1,id:155,nolog,pass"
 See the GEO variable for an example and more information on various fields available.
 
 == gsbLookup == 
-'''Description:''' Performs a local lookup of Google's Safe Browsing using URLs in input against the GSB database previously configured using SecGsbLookupDb. When combined with capture operator it will save the matched url into tx.0 variable.
-
-'''Syntax:''' <code>SecRule TARGET "@gsbLookup REGEX" ACTIONS</code>
-
-'''Version:''' 2.6
-
-'''Supported on libModSecurity:''' TBD
-
-'''Example:'''
-The gsbLookup operator matches on success and is thus best used in combination with a block or redirect action. If you wish to block on successful lookups, the following example demonstrates how best to do it:
-<pre>
-# Configure Google Safe Browsing database 
-SecGsbLookupDb /path/to/GsbMalware.dat 
-... 
-# Check response bodies for malicious links
-SecRule RESPONSE_BODY "@gsbLookup =\"https?\:\/\/(.*?)\"" "phase:4,id:157,capture,log,block,msg:'Bad url detected in RESPONSE_BODY (Google Safe Browsing Check)',logdata:'http://www.google.com/safebrowsing/diagnostic?site=%{tx.0}'"
-</pre>
-
-; Note : This operator supports the "capture" action.
+''Not supported in v3''' 
 
 == gt ==
 '''Description:''' Performs numerical comparison and returns true if the input value is greater than the operator parameter. Macro expansion is performed on the parameter string before comparison.
