@@ -189,6 +189,25 @@ This directive is commonly used to set variables and initialize persistent colle
 
 This directive is needed if a backend web application is using a nonstandard argument separator. Applications are sometimes (very rarely) written to use a semicolon separator. You should not change the default setting unless you establish that the application you are working with requires a different separator. If this directive is not set properly for each web application, then ModSecurity will not be able to parse the arguments appropriately and the effectiveness of the rule matching will be significantly decreased.
 
+== SecArgumentsLimit ==
+'''Description:''' Configures the maximum number of ARGS that will be accepted for processing.
+
+'''Syntax:''' <code>SecArgumentsLimit LIMIT </code>
+
+'''Example Usage:''' <code>SecArgumentsLimit 1000 </code>
+
+'''Scope:''' Any
+
+'''Version:''' 3.0.5
+
+'''Default:''' no limit
+
+When using this setting, it is recommended to accompany it with a rule that will test for that same integer value and deny the request if it is reached. E.g.
+<pre>
+SecRule &ARGS "@ge 1000" "id:'200007', phase:2,t:none,log,deny,status:400,msg: ...
+</pre>
+Without such a matching rule, an attacker could potentially evade detection by placing the attack payload in a parameter occurring beyond the limit.
+
 == SecAuditEngine ==
 '''Description:''' Configures the audit logging engine. 
 
