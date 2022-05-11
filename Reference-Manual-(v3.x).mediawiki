@@ -1614,7 +1614,7 @@ If there’s been an error during request body parsing, the variable will contai
 <code>SecRule REQBODY_ERROR_MSG "failed to parse" "id:40"</code>
 
 == REQBODY_PROCESSOR ==
-Contains the name of the currently used request body processor. The possible values are URLENCODED, MULTIPART, and XML.
+Contains the name of the currently used request body processor. If set, the possible values are URLENCODED, MULTIPART, XML, and JSON.
 
 <pre>
 SecRule REQBODY_PROCESSOR "^XML$ chain,id:41 
@@ -2207,21 +2207,7 @@ SecAction phase:3,allow,id:98
 </pre>
 
 == append ==
-'''Description''': Appends text given as parameter to the end of response body. Content injection must be en- abled (using the SecContentInjection directive). No content type checks are made, which means that before using any of the content injection actions, you must check whether the content type of the response is adequate for injection.
-
-'''Version:''' 2.x-2.9.x
-
-'''Supported on libModSecurity:''' No
-
-'''Action Group:''' Non-disruptive
-
-'''Processing Phases:''' 3 and 4.
-
-Example:
-
-<pre>SecRule RESPONSE_CONTENT_TYPE "^text/html" "nolog,id:99,pass,append:'<hr>Footer'"</pre>
-
-; Warning : Although macro expansion is allowed in the additional content, you are strongly cau- tioned against inserting user-defined data fields into output. Doing so would create a cross-site scripting vulnerability.
+'''Not supported in v3'''
 
 == auditlog ==
 '''Description:''' Marks the transaction for logging in the audit log.
@@ -2378,23 +2364,7 @@ SecAction phase:5,id:108,nolog,pass,deprecatevar:SESSION.score=60/300
 Counter values are always positive, meaning that the value will never go below zero. Unlike expirevar, the deprecate action must be executed on every request.
 
 == drop ==
-'''Description:''' Initiates an immediate close of the TCP connection by sending a FIN packet.
-
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' TBI
-
-'''Action Group:''' Disruptive
-
-'''Example:''' The following example initiates an IP collection for tracking Basic Authentication attempts. If the client goes over the threshold of more than 25 attempts in 2 minutes, it will DROP subsequent connections.
-<pre>
-SecAction phase:1,id:109,initcol:ip=%{REMOTE_ADDR},nolog
-SecRule ARGS:login "!^$" "nolog,phase:1,id:110,setvar:ip.auth_attempt=+1,deprecatevar:ip.auth_attempt=25/120"
-SecRule IP:AUTH_ATTEMPT "@gt 25" "log,drop,phase:1,id:111,msg:'Possible Brute Force Attack'"
-</pre>
-
-; Note : This action is currently not available on Windows based builds. 
-This action is extremely useful when responding to both Brute Force and Denial of Service attacks in that, in both cases, you want to minimize both the network bandwidth and the data returned to the client. This action causes error message to appear in the log "(9)Bad file descriptor: core_output_filter: writing data to the network"
+'''Description:''' Unlike in v2, in ModSecurity v3 this action currently functions the same as the deny action.
 
 == exec ==
 '''Description:''' Executes an external script/binary supplied as parameter. As of v2.5.0, if the parameter supplied to exec is a Lua script (detected by the .lua extension) the script will be processed internally. This means you will get direct access to the internal request context from the script. Please read the SecRuleScript documentation for more details on how to write Lua scripts.
@@ -2635,22 +2605,7 @@ SecRule REQUEST_HEADERS:User-Agent "Test" "phase:request,log,deny,id:127"
 ; Warning : Keep in mind that if you specify the incorrect phase, the variable used in the rule may not yet be available. This could lead to a false negative situation where your variable and operator may be correct, but it misses malicious data because you specified the wrong phase.
 
 == prepend ==
-'''Description:''' Prepends the text given as parameter to response body. Content injection must be enabled (using the SecContentInjection directive). No content type checks are made, which means that before using any of the content injection actions, you must check whether the content type of the response is adequate for injection.
-
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' TBI
-
-'''Action Group:''' Non-disruptive
-
-'''Processing Phases:''' 3 and 4.
-
-'''Example:'''
-<pre>
-SecRule RESPONSE_CONTENT_TYPE ^text/html \ "phase:3,nolog,pass,id:128,prepend:'Header<br>'"
-</pre>
-
-; Warning : Although macro expansion is allowed in the injected content, you are strongly cautioned against inserting user defined data fields int output. Doing so would create a cross-site scripting vulnerability.
+'''Not supported in v3'''
 
 == proxy ==
 '''Description:''' Intercepts the current transaction by forwarding the request to another web server using the proxy backend. The forwarding is carried out transparently to the HTTP client (i.e., there’s no external redirection taking place).
