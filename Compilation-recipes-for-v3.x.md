@@ -12,7 +12,7 @@ If your distribution is missing and you manage to compile it, don't forget to ad
 2. [CentOS 7 Minimal (dynamic)](#centos-7-minimal-dynamic)
 3. [Amazon Linux](#amazon-linux)
 4. [Amazon Linux 2](#amazon-linux-2)
-5. [Rocky Linux/AlmaLinux 8.x](#rocky-alma-8x)
+5. [Rocky Linux/AlmaLinux 8.X Minimal](#rocky-linux-almalinux-8-minimal)
 7. [Ubuntu 18.04](#ubuntu-1804)
 8. [Ubuntu 20.04](#ubuntu-2004)
 9. [Ubuntu 22.04](#ubuntu-2204)
@@ -93,9 +93,31 @@ Then add load_module instruction to nginx.conf in the main (top-level) context:
 load_module modules/ngx_http_modsecurity_module.so;
 ```
 
-# Rocky Linux / AlmaLinux 8 Minimal
+## Rocky Linux/ AlmaLinux 8 Minimal
+
+Check nginx -v for the NGINX version and change appropriately; here it's 1.22.0.
+
 ```sh
-sudo dnf 
+sudo dnf groupinstall 'Development Tools' -y
+sudo dnf install gcc-c++ flex bison yajl yajl-devel curl-devel curl GeoIP-devel doxygen zlib-devel
+sudo dnf install lmdb lmdb-devel libxml2 libxml2-devel ssdeep ssdeep-devel lua lua-devel
+sudo git clone --depth 1 -b v3/master --single-branch https://github.com/SpiderLabs/ModSecurity
+cd ModSecurity
+sudo git submodule init
+sudo git submodule update
+sudo ./build.sh
+sudo ./configure
+sudo make
+sudo make install
+sudo git clone --depth 1 https://github.com/SpiderLabs/ModSecurity-nginx.git
+sudo wget http://nginx.org/download/nginx-1.22.0.tar.gz
+sudo tar zxvf nginx-1.22.0.tar.gz
+cd nginx-1.22.0
+sudo ./configure --with-compat --add-dynamic-module=../ModSecurity-nginx
+sudo make modules
+sudo cp objs/ngx_http_modsecurity_module.so /etc/nginx/modules
+sudo mkdir /etc/nginx/modsec
+sudo cp ~/ModSecurity/unicode.mapping /etc/nginx/modsec/
 ```
 
 ## Amazon Linux
@@ -451,9 +473,9 @@ rpm -i /root/rpmbuild/RPMS/x86_64/nginx-modsecurity3-centos7-1.0.0-1.x86_64.rpm
 ### RPM SPEC file
 
 ```
-Name: nginx-modsecurity3-centos7
+Name: nginx-modsecurity3
 Version: 3.0.3
-Release: 1
+Release: 1%{?dist}
 Group: Applications/System
 BuildArch: x86_64
 Summary: modsecurity for nginx
