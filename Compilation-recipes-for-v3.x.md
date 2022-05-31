@@ -18,7 +18,8 @@ If your distribution is missing and you manage to compile it, don't forget to ad
 9. [Ubuntu 22.04](#ubuntu-2204)
 10. [Mac OSX 10.13](#mac-osx-1013)
 11. [AWS Linux - RPM](#aws-linux-rpm)
-12. [CentOS 7 - RPM](#centos-7-rpm)
+12. [CentOS 7-RPM](#centos-7-rpm)
+13. [Rocky Linux/AlmaLinux 8.X - RPM](#rocky-linux-almalinux-8-rpm)
 
 ## Centos 7 Minimal
 
@@ -512,4 +513,20 @@ ldconfig
 
 %files
 /*
+```
+
+## Rocky Linux /AlmaLinux 8 RPM
+```sh
+sudo dnf install -y rpmdevtools rpmlint epel-release
+sudo dnf install -y mock
+usermod -a -G mock your_user_name_here
+```
+
+Setup rpmdevtree and then depending on your distro and architecture initiate a mock chroot.
+```sh
+rpmdev-setuptree
+mock -r rocky-8-x86_64 --init
+```
+
+```spec
 ```
